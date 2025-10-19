@@ -36,7 +36,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 80vh;
             padding: 20px;
             position: relative;
             overflow: hidden; 
@@ -44,13 +44,15 @@
         
         .card {
             width: 90%;
-            max-width: 380px;
+            max-width: 420px;
             background: var(--azul-escuro); 
             border-radius: 28px; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             position: relative;
             animation: fadeInScale 0.8s ease-out forwards; 
+            /* Ajuste o padding inferior para acomodar os dois botões */
+            padding-bottom: 180px; 
         }
 
         @keyframes fadeInScale {
@@ -59,10 +61,11 @@
         }
 
         .conteudo {
-            padding: 40px 30px 100px; 
+            padding: 40px 30px 40px; /* Reduzido o padding inferior */
             color: var(--cor-texto-claro);
             position: relative;
             z-index: 2;
+            text-align: center; /* Centraliza logo e títulos */
         }
         
         /* ======================================================= */
@@ -101,9 +104,9 @@
             border: none;
             border-bottom: 2px solid rgba(255, 255, 255, 0.2); 
             outline: none;
-            /* Margem inferior para separar do final do form */
             margin-bottom: 35px; 
             transition: border-color 0.3s ease;
+            text-align: center; /* Centraliza os números digitados */
         }
 
         input[type="password"]:focus {
@@ -115,55 +118,81 @@
         }
         
         /* ======================================================= */
-        /* ONDA, BOTÃO E RODAPÉ (Sem Alteração) */
+        /* ONDA e BOTÕES */
         /* ======================================================= */
         .onda {
             position: absolute;
-            bottom: 0;
+            bottom: 10;
             left: 0;
             width: 100%;
-            height: 120px; 
+            height: 400px; /* Aumentado para cobrir os dois botões */
             background: var(--branco);
             border-top-left-radius: 120px; 
             border-top-right-radius: 120px; 
             z-index: 1;
         }
-
-        button {
+        
+        /* Container para os dois botões */
+        .button-container {
             position: absolute;
-            bottom: 60px; 
+            bottom: 5;
             left: 50%;
             transform: translateX(-50%);
             width: 85%;
-            background: var(--cor-principal); 
-            color: var(--azul-escuro); 
+            padding-bottom: 20px;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Espaço entre os botões */
+        }
+
+        .button-container button,
+        .button-container a {
+            display: block;
+            width: 100%;
             font-size: 17px;
             font-weight: 700;
-            border: none;
             padding: 15px 0;
             border-radius: 50px;
             cursor: pointer;
-            z-index: 3;
-            box-shadow: 0 5px 15px rgba(255, 193, 0, 0.4);
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            text-align: center;
+            text-decoration: none;
         }
 
-        button:hover {
+        /* Estilo para o botão principal de Login */
+        .primary-button {
+            background: var(--cor-principal); 
+            color: var(--azul-escuro); 
+            border: none;
+            box-shadow: 0 5px 15px rgba(255, 193, 0, 0.4);
+        }
+
+        .primary-button:hover {
             background-color: var(--cor-botao-hover);
-            transform: translate(-50%, -2px);
+            transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(255, 193, 0, 0.6);
         }
-        
-        button:active {
-            transform: translateX(-50%); 
-            box-shadow: 0 2px 5px rgba(255, 193, 0, 0.4);
-            background-color: var(--cor-botao-hover);
+
+        /* NOVO ESTILO: Botão secundário "Voltar ao Menu" */
+        .secondary-button {
+            background: transparent;
+            color: var(--azul-escuro);
+            border: 2px solid var(--azul-escuro); /* Borda sólida */
+            box-shadow: none;
+            font-weight: 600;
         }
+        
+        .secondary-button:hover {
+            background: rgba(0, 0, 0, 0.05); /* Leve fundo escuro */
+            transform: translateY(-1px);
+        }
+
 
         footer {
             text-align: center;
             font-size: 12px;
-            color: rgba(0, 0, 0, 0.5);
+            color: rgba(0, 0, 0, 0.6);
             background: var(--branco);
             padding: 15px 0;
             position: absolute; 
@@ -173,23 +202,20 @@
         }
 
         /* ======================================================= */
-        /* MENSAGEM DE ERRO (POSICIONAMENTO ACIMA DO INPUT) */
+        /* MENSAGEM DE ERRO */
         /* ======================================================= */
         .mensagem-erro {
             color: #ff7b7b;
             font-size: 13px;
             text-align: center;
-            /* Margem para separar do subtítulo acima e do input abaixo */
-            margin-top: -25px; /* Puxa para cima para ficar mais próximo do subtítulo */
-            margin-bottom: 20px; /* Espaço entre o erro e o input */
-            /* Estado Inicial: Oculto e sem ocupar espaço */
+            margin-top: -25px;
+            margin-bottom: 20px; 
             visibility: hidden; 
             opacity: 0;
             transition: opacity 0.3s ease;
         }
         
         .mensagem-erro.show {
-            /* ESTADO VISÍVEL */
             visibility: visible; 
             opacity: 1; 
         }
@@ -213,11 +239,22 @@
         </form>
     </div>
 
-    <button type="submit" form="formSenha">Visualizar Dívidas</button>
+    <div class="button-container">
+        
+        <button type="submit" form="formSenha" class="primary-button">
+            Visualizar Dívidas
+        </button>
+        
+        <a href="index.html" class="secondary-button">
+            Voltar ao Menu Principal
+        </a>
+
+    </div>
     
     <div class="onda"></div>
     
     <footer>© Lucas Coelho, 2025</footer>
+    
 </div>
 
 <script>
@@ -247,7 +284,12 @@
         if (senhasELinks.hasOwnProperty(senhaDigitada)) {
             // Se CORRETO, esconde a mensagem e redireciona
             mensagemErro.classList.remove('show');
-            window.location.href = senhasELinks[senhaDigitada];
+            // OBS: Redireciona para o link do Google Sheets, que deve abrir em nova aba
+            window.open(senhasELinks[senhaDigitada], '_blank'); 
+
+            // Se você quer que a página de login continue aberta após o Sheets abrir:
+            // window.location.href = senhasELinks[senhaDigitada]; // Use isso se quiser fechar a página de login
+            
         } else {
             // Se INCORRETO, exibe a mensagem, limpa o campo e foca para nova tentativa
             mensagemErro.classList.add('show');
@@ -258,7 +300,8 @@
     
     // Limpa a mensagem de erro assim que o usuário começa a digitar novamente
     senhaInput.addEventListener('input', () => {
-        senhaInput.value = senhaInput.value.replace(/\D/g, '');
+        // Garante que apenas números sejam digitados
+        senhaInput.value = senhaInput.value.replace(/\D/g, ''); 
         mensagemErro.classList.remove('show');
     });
 </script>
