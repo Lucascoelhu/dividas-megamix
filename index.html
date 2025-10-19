@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dívidas - Mega Mix</title>
+    <title>Menu Principal - Mega Mix</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
@@ -16,9 +16,12 @@
             --cor-botao-hover: #FFA000; 
             --azul-escuro: #1c2331; /* Fundo do Card */
             --azul-muito-escuro: #10161f; /* Fundo do Body */
-            --branco: #ffffff; /* Fundo da Onda */
+            --branco: #ffffff;
             --cor-texto-claro: #E5E7EB; 
             --cor-texto-secundario: rgba(255, 255, 255, 0.7); 
+            --cor-texto-botao: var(--azul-escuro); /* Texto nos botões amarelos */
+            --cor-botao-alternativo: #253145; /* Cor para botão não primário */
+            --cor-botao-alternativo-hover: #33445e;
         }
 
         /* ======================================================= */
@@ -38,17 +41,16 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            position: relative;
             overflow: hidden; 
         }
-        
+
         .card {
             width: 90%;
             max-width: 380px;
             background: var(--azul-escuro); 
             border-radius: 28px; 
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            overflow: hidden;
+            padding: 40px 30px; /* Padding ajustado para o menu */
             position: relative;
             animation: fadeInScale 0.8s ease-out forwards; 
         }
@@ -59,10 +61,8 @@
         }
 
         .conteudo {
-            padding: 40px 30px 100px; 
             color: var(--cor-texto-claro);
-            position: relative;
-            z-index: 2;
+            text-align: center;
         }
         
         /* ======================================================= */
@@ -86,113 +86,72 @@
         p.subtitulo {
             font-size: 14px;
             color: var(--cor-texto-secundario);
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         /* ======================================================= */
-        /* INPUT DE SENHA */
+        /* ESTILO DOS BOTÕES DE MENU (Links) */
         /* ======================================================= */
-        input[type="password"] {
-            width: 100%;
-            padding: 10px 0;
-            font-size: 16px;
-            color: var(--cor-texto-claro);
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2); 
-            outline: none;
-            /* Margem inferior para separar do final do form */
-            margin-bottom: 35px; 
-            transition: border-color 0.3s ease;
-        }
-
-        input[type="password"]:focus {
-            border-bottom-color: var(--cor-principal); 
-        }
-
-        input::placeholder {
-            color: var(--cor-texto-secundario);
+        .menu-opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Espaço entre os botões */
         }
         
-        /* ======================================================= */
-        /* ONDA, BOTÃO E RODAPÉ (Sem Alteração) */
-        /* ======================================================= */
-        .onda {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        .menu-button {
+            display: block;
             width: 100%;
-            height: 120px; 
-            background: var(--branco);
-            border-top-left-radius: 120px; 
-            border-top-right-radius: 120px; 
-            z-index: 1;
-        }
-
-        button {
-            position: absolute;
-            bottom: 60px; 
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85%;
-            background: var(--cor-principal); 
-            color: var(--azul-escuro); 
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
             font-size: 17px;
-            font-weight: 700;
-            border: none;
-            padding: 15px 0;
-            border-radius: 50px;
-            cursor: pointer;
-            z-index: 3;
-            box-shadow: 0 5px 15px rgba(255, 193, 0, 0.4);
+            font-weight: 600;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            letter-spacing: 0.5px;
         }
 
-        button:hover {
+        /* Botão Principal (Dívidas) - Amarelo */
+        .primary-button {
+            background: var(--cor-principal); 
+            color: var(--cor-texto-botao); 
+        }
+
+        .primary-button:hover {
             background-color: var(--cor-botao-hover);
-            transform: translate(-50%, -2px);
-            box-shadow: 0 8px 20px rgba(255, 193, 0, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 193, 0, 0.5);
+        }
+
+        /* Botão Secundário (Mini Game) - Escuro */
+        .secondary-button {
+            background: var(--cor-botao-alternativo);
+            color: var(--cor-texto-claro);
+            border: 2px solid var(--cor-principal); /* Borda amarela */
+        }
+
+        .secondary-button:hover {
+            background-color: var(--cor-botao-alternativo-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 193, 0, 0.3);
         }
         
-        button:active {
-            transform: translateX(-50%); 
-            box-shadow: 0 2px 5px rgba(255, 193, 0, 0.4);
-            background-color: var(--cor-botao-hover);
+        /* Ícones dentro dos botões */
+        .menu-button span {
+            margin-right: 8px;
         }
 
+        /* ======================================================= */
+        /* RODAPÉ */
+        /* ======================================================= */
         footer {
             text-align: center;
             font-size: 12px;
-            color: rgba(0, 0, 0, 0.5);
-            background: var(--branco);
-            padding: 15px 0;
-            position: absolute; 
-            bottom: 0;
-            width: 100%;
-            z-index: 2;
+            color: var(--cor-texto-secundario);
+            padding-top: 40px;
         }
 
-        /* ======================================================= */
-        /* MENSAGEM DE ERRO (POSICIONAMENTO ACIMA DO INPUT) */
-        /* ======================================================= */
-        .mensagem-erro {
-            color: #ff7b7b;
-            font-size: 13px;
-            text-align: center;
-            /* Margem para separar do subtítulo acima e do input abaixo */
-            margin-top: -25px; /* Puxa para cima para ficar mais próximo do subtítulo */
-            margin-bottom: 20px; /* Espaço entre o erro e o input */
-            /* Estado Inicial: Oculto e sem ocupar espaço */
-            visibility: hidden; 
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .mensagem-erro.show {
-            /* ESTADO VISÍVEL */
-            visibility: visible; 
-            opacity: 1; 
-        }
     </style>
 </head>
 <body>
@@ -202,66 +161,63 @@
         
         <img src="GRUPO.png" alt="Grupo Mega Logo" class="logo">
         
-        <h1>Dívidas - Mega Mix</h1>
-        <p class="subtitulo">Acesse seu extrato digitando sua senha pessoal.</p>
+        <h1>Bem-vindo!</h1>
+        <p class="subtitulo">O que você deseja acessar?</p>
 
-        <form id="formSenha">
+        <div class="menu-opcoes">
             
-            <div class="mensagem-erro" id="mensagemErro">Senha incorreta. Verifique e tente novamente.</div>
+            <a href="#" id="linkDividas" class="menu-button primary-button">
+                <span>💰</span> Visualizar Extrato de Dívidas
+            </a>
 
-            <input type="password" id="senha" placeholder="Senha (4 dígitos)" maxlength="4" inputmode="numeric" required>
-        </form>
+            <a href="#" class="menu-button secondary-button">
+                <span>🕹️</span> Mini Game (Em Breve!)
+            </a>
+            
+        </div>
+        
     </div>
-
-    <button type="submit" form="formSenha">Visualizar Dívidas</button>
-    
-    <div class="onda"></div>
     
     <footer>© Lucas Coelho, 2025</footer>
 </div>
 
 <script>
-    // =================================================================
-    // 1. CONFIGURAÇÃO DE SENHAS E LINKS
-    // =================================================================
-    const senhasELinks = {
-        "1274": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1522031752&single=true",
-        "9406": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1634478111&single=true",
-        "3168": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1202405103&single=true",
-        "7521": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1821328718&single=true",
-        "6042": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1912616329&single=true",
-        "2715": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1416586430&single=true",
-        "5839": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1936400613&single=true",
-        "8493": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=868500341&single=true"
-    };
-    // =================================================================
+    // Este script é necessário para receber a senha digitada
+    // e usar ela para ir para o extrato correto de dívidas.
     
-    const form = document.getElementById('formSenha');
-    const senhaInput = document.getElementById('senha');
-    const mensagemErro = document.getElementById('mensagemErro');
+    // Pega a URL atual
+    const urlParams = new URLSearchParams(window.location.search);
+    // Tenta obter a senha que foi passada na URL (ver seção 2 abaixo)
+    const senha = urlParams.get('s'); 
+    
+    const linkDividas = document.getElementById('linkDividas');
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const senhaDigitada = senhaInput.value.trim();
-
-        if (senhasELinks.hasOwnProperty(senhaDigitada)) {
-            // Se CORRETO, esconde a mensagem e redireciona
-            mensagemErro.classList.remove('show');
-            window.location.href = senhasELinks[senhaDigitada];
-        } else {
-            // Se INCORRETO, exibe a mensagem, limpa o campo e foca para nova tentativa
-            mensagemErro.classList.add('show');
-            senhaInput.value = '';
-            senhaInput.focus();
+    if (senha && senha.length === 4) {
+        // Se a senha foi passada, o usuário já fez login e podemos setar o link de Dívidas
+        // Nota: O objeto senhasELinks REAL deve ser inserido AQUI
+        const senhasELinks = {
+            "1274": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1522031752&single=true",
+            "9406": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1634478111&single=true",
+            "3168": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1202405103&single=true",
+            "7521": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1821328718&single=true",
+            "6042": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1912616329&single=true",
+            "2715": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1416586430&single=true",
+            "5839": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1936400613&single=true",
+            "8493": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=868500341&single=true"
+        };
+        
+        // Atribui o link correto ao botão de Dívidas
+        if (senhasELinks.hasOwnProperty(senha)) {
+             linkDividas.href = senhasELinks[senha];
         }
-    });
+        
+    } else {
+         // Se, por algum motivo, o usuário tentar acessar menu.html diretamente,
+         // ele será redirecionado para a tela de login.
+         linkDividas.href = "index.html"; // Redireciona para o login (assumindo que o login é index.html)
+    }
     
-    // Limpa a mensagem de erro assim que o usuário começa a digitar novamente
-    senhaInput.addEventListener('input', () => {
-        senhaInput.value = senhaInput.value.replace(/\D/g, '');
-        mensagemErro.classList.remove('show');
-    });
 </script>
 
 </body>
-</html>
+</html>\
