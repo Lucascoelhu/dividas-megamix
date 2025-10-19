@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivinhe o Símbolo!</title>
+    <style>
+        /* ==================================== */
+        /* CSS: Estilos do Jogo - INÍCIO */
+        /* ==================================== */
+        
+        /* Keyframes para animação de movimento lento no fundo */
+        @keyframes moveBackground {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 80px 80px; /* Move na diagonal */
+            }
+        }
+        
+        body {
+            /* Aplica o fundo de padrão */
+            background-color: #f0faff;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><text x='10' y='40' style='font-size: 25px; opacity: 0.15;'>☀️</text><text x='60' y='80' style='font-size: 25px; opacity: 0.15;'>☔</text><text x='35' y='10' style='font-size: 25px; opacity: 0.15;'>❓</text></svg>");
+            background-repeat: repeat;
+            
+            /* Centralização Vertical e Horizontal */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            margin: 0;
+            
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            flex-grow: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        h2 {
+            font-family: Georgia, serif;
+            color: #ff5722;
+            border-bottom: 3px solid #ff9800;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        p {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+        .simbolo-grade {
+            font-size: 3em;
+            line-height: 1.5;
+            word-spacing: 20px;
+            padding: 20px;
+            border: 2px dashed #00bcd4;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f8ff;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 12px 25px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+            box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Botão Principal */
+        #btn-pronto {
+            background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px #388e3c;
+            animation: pulse-button 1.5s infinite;
+        }
+        #btn-pronto:hover {
+            background-color: #388e3c;
+            transform: scale(1.05);
+            box-shadow: 0 2px #388e3c;
+            animation: none;
+        }
+
+        /* Keyframes para animação do botão */
+        @keyframes pulse-button {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* Estilos das perguntas */
+        .pergunta-lista {
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #e9f5ff;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+        }
+        .pergunta-lista.active {
+            opacity: 1;
+            max-height: 500px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .lista-simbolos {
+            font-size: 1.5em;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        
+        /* Centraliza os botões SIM e NÃO */
+        .resposta-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .resposta-container button {
+            margin: 0 15px;
+        }
+        
+        /* Botões SIM / NÃO */
+        .resposta-container button.sim {
+            background-color: #4CAF50;
+        }
+        .resposta-container button.nao {
+            background-color: #f44336;
+        }
+        
+        /* Animação de Pressionar: Quando o botão é ativado (clicado) */
+        .resposta-container button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Estilos do Resultado */
+        #resultado {
+            font-size: 3em;
+            color: #007bff;
+            margin-top: 30px;
+            padding: 15px;
+            border: 3px dashed #ff9800;
+            border-radius: 10px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        #btn-reiniciar {
+             background-color: #f44336 !important; 
+             box-shadow: 0 4px #d32f2f;
+        }
+        
+        /* Estilos específicos para a tela de apresentação */
+        #tela-apresentacao {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---------------------------------------------------- */
+        /* REGRAS DE MEDIA QUERY (OTIMIZAÇÃO MOBILE) - ADICIONADO */
+        /* ---------------------------------------------------- */
+        @media (max-width: 600px) {
+            .simbolo-grade {
+                font-size: 2.5em; 
+                word-spacing: 10px;
+                padding: 10px;
+            }
+            .lista-simbolos {
+                font-size: 1.2em;
+            }
+            .resposta-container button {
+                margin: 0 5px; 
+                padding: 10px 15px;
+            }
+            #resultado {
+                font-size: 2em;
+            }
+        }
+        
+        /* ==================================== */
+        /* CSS: Estilos do Jogo - FIM */
+        /* ==================================== */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="tela-apresentacao">
+            <h2>PENSE EM 1 SÍMBOLO</h2>
+            <p>Memorize um símbolo da lista abaixo e clique em "Estou pronto!"</p>
+            
+            <div id="simbolos-todos" class="simbolo-grade">
+                </div>
+            
+            <button id="btn-pronto">Estou pronto!</button>
+        </div>
+
+        <div id="tela-perguntas" style="display: none;">
+            
+            <div id="listas-container">
+                </div>
+
+            <div id="resultado">
+                </div>
+            
+            <button id="btn-reiniciar" style="background-color: #dc3545; color: white; margin-top: 20px; display: none;">Reiniciar Jogo</button>
+        </div>
+    </div> <p style="margin-top: 50px; color: #888; font-size: 0.9em;">Criado por: Lucas Coelho, 2025</p>
+
+    <script>
+        // ====================================
+        // JAVASCRIPT: Lógica do Jogo
+        // ====================================
+
+        // Estado do Jogo
+        let somaFinal = 0;
+        let listaAtualIndex = 0;
+
+        // --- 1. TABELA DE CONVERSÃO COMPLETA (1 a 63) ---
+        // Usamos os emojis que você me enviou
+        const tabelaSimbolos = {
+            1: '☀️', 2: '☁️', 3: '☔', 4: '⚡', 5: '❄️', 6: '🔥', 7: '💧', 8: '🌊', 9: '🌪️', 10: '⛰️',
+            11: '⛺', 12: '🏠', 13: '🚗', 14: '🚲', 15: '✈️', 16: '⛵', 17: '🚀', 18: '⏰', 19: '⏳', 20: '⌛',
+            21: '⌚', 22: '📱', 23: '💻', 24: '💾', 25: '💿', 26: '📸', 27: '📹', 28: '🎙️', 29: '🎧', 30: '📣',
+            31: '🔔', 32: '✉️', 33: '📝', 34: '📌', 35: '📎', 36: '🔑', 37: '🔒', 38: '🔓', 39: '➕', 40: '➖',
+            41: '✖️', 42: '➗', 43: '⬆️', 44: '⬇️', 45: '⬅️', 46: '➡️', 47: '↖️', 48: '↘️', 49: '↙️', 50: '↗️',
+            51: '▶️', 52: '⏸️', 53: '⏹️', 54: '⏭️', 55: '⏮️', 56: '⏫', 57: '⏬', 58: '⏩', 59: '⏪', 60: '🔄',
+            61: 'ℹ️', 62: '❓', 63: '❗'
+        };
+
+        // --- 2. Geração das Listas de Símbolos ---
+        function gerarListaSimbolos(valor) {
+            let simbolosLista = [];
+            for (let i = 1; i <= 63; i++) {
+                if ((i & valor) === valor) {
+                    simbolosLista.push(tabelaSimbolos[i]);
+                }
+            }
+            return simbolosLista.join(', ');
+        }
+        
+        // --- 3. Dados das Listas (Bit e Símbolos) ---
+        const listas = [
+            { valor: 1, simbolos: gerarListaSimbolos(1) },
+            { valor: 2, simbolos: gerarListaSimbolos(2) },
+            { valor: 4, simbolos: gerarListaSimbolos(4) },
+            { valor: 8, simbolos: gerarListaSimbolos(8) },
+            { valor: 16, simbolos: gerarListaSimbolos(16) },
+            { valor: 32, simbolos: gerarListaSimbolos(32) },
+        ];
+        
+        // --- 4. Funções de Controle de Tela e DOM ---
+        const telaApresentacao = document.getElementById('tela-apresentacao');
+        const telaPerguntas = document.getElementById('tela-perguntas');
+        const simbolosTodosDiv = document.getElementById('simbolos-todos');
+        const listasContainer = document.getElementById('listas-container');
+        const resultadoDiv = document.getElementById('resultado');
+        const btnReiniciar = document.getElementById('btn-reiniciar');
+
+        // Mostra todos os símbolos na Tela 1
+        simbolosTodosDiv.innerHTML = Object.values(tabelaSimbolos).join(' ');
+
+        // Cria a interface de perguntas (TODAS, mas as esconde)
+        function montarTodasPerguntas() {
+            listas.forEach((lista, index) => {
+                const div = document.createElement('div');
+                div.className = 'pergunta-lista';
+                div.id = `lista-${index}`;
+                div.innerHTML = `
+                    <h2>O símbolo que você pensou está na lista abaixo?</h2>
+                    <div class="lista-simbolos">${lista.simbolos}</div>
+                    <div class="resposta-container">
+                        <button class="sim" onclick="responderPergunta(${lista.valor}, true)">SIM</button>
+                        <button class="nao" onclick="responderPergunta(${lista.valor}, false)">NÃO</button>
+                    </div>
+                `;
+                listasContainer.appendChild(div);
+            });
+        }
+        
+        // Inicializa as perguntas no DOM
+        montarTodasPerguntas();
+        const elementosLista = document.querySelectorAll('.pergunta-lista');
+
+        // Exibe a lista atual e oculta a anterior (com animação)
+        function mostrarProximaLista() {
+            // Se já tivermos percorrido todas as listas, calcule o resultado final
+            if (listaAtualIndex >= listas.length) {
+                mostrarResultadoFinal();
+                return;
+            }
+
+            // Oculta a lista anterior
+            if (listaAtualIndex > 0) {
+                elementosLista[listaAtualIndex - 1].classList.remove('active');
+            }
+
+            // Mostra a lista atual
+            elementosLista[listaAtualIndex].classList.add('active');
+        }
+
+        // Função chamada ao clicar SIM ou NÃO
+        function responderPergunta(valorBinario, sim) {
+            // 1. Oculta a lista atual
+            elementosLista[listaAtualIndex].classList.remove('active');
+            
+            // 2. Realiza a Soma Binária
+            if (sim) {
+                somaFinal += valorBinario;
+            }
+            
+            // 3. Move para a próxima lista
+            listaAtualIndex++;
+            
+            // 4. Mostra a próxima lista ou o resultado
+            setTimeout(mostrarProximaLista, 500); // 500ms de atraso para a animação
+        }
+
+        // --- FUNÇÃO MODIFICADA PARA SUSPENSE ---
+        function mostrarResultadoFinal() {
+            const simboloResultado = tabelaSimbolos[somaFinal];
+            
+            // Adiciona o suspense antes de revelar o resultado final
+            resultadoDiv.style.display = 'block';
+            resultadoDiv.innerHTML = `<h1>... Pensando ...</h1>`;
+            
+            setTimeout(() => {
+                if (somaFinal === 0) {
+                    resultadoDiv.innerHTML = `Ops! Você não marcou nenhuma lista. Tente novamente!`;
+                } else {
+                    // Mensagem de suspense e a revelação do símbolo
+                    resultadoDiv.innerHTML = `
+                        <p style="font-size: 1.2em; color: #333; margin-bottom: 10px;">O gênio adivinhou! Seu símbolo é...</p>
+                        <span style="font-size: 4em; color: #007bff; display: block; animation: pulse 1s infinite;">${simboloResultado}</span>
+                    `;
+                }
+                btnReiniciar.style.display = 'block';
+            }, 1500); // 1.5 segundos de suspense
+
+            // CSS de animação para o suspense 
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // --- 5. Eventos de Botão ---
+        document.getElementById('btn-pronto').addEventListener('click', () => {
+            telaApresentacao.style.display = 'none';
+            telaPerguntas.style.display = 'block';
+            mostrarProximaLista(); // Começa na primeira lista
+        });
+
+        // Botão "Reiniciar Jogo"
+        btnReiniciar.addEventListener('click', () => {
+            somaFinal = 0;
+            listaAtualIndex = 0;
+            elementosLista.forEach(el => el.classList.remove('active')); // Oculta todas
+            resultadoDiv.style.display = 'none';
+            btnReiniciar.style.display = 'none';
+            telaPerguntas.style.display = 'none';
+            telaApresentacao.style.display = 'block'; // Volta para a tela de apresentação
+        });
+
+    </script>
+
+</body>
+</html>
