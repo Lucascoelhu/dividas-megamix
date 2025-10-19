@@ -183,18 +183,21 @@
 
 <script>
     // Este script é necessário para receber a senha digitada
-    // e usar ela para ir para o extrato correto de dívidas.
+    // e usar ela para ir para o extrato correto de dívidas ou mini games.
     
     // Pega a URL atual
     const urlParams = new URLSearchParams(window.location.search);
-    // Tenta obter a senha que foi passada na URL (ver seção 2 abaixo)
+    // Tenta obter a senha que foi passada na URL (do login, por exemplo)
     const senha = urlParams.get('s'); 
     
-    const linkDividas = document.getElementById('linkDividas');
+    // 1. OBTENDO OS ELEMENTOS DO HTML (Usando os IDs que você forneceu)
+    const linkDividas = document.getElementById('estrato_dividas');
+    const linkMiniGame = document.getElementById('menu_miniGames');
 
     if (senha && senha.length === 4) {
-        // Se a senha foi passada, o usuário já fez login e podemos setar o link de Dívidas
-        // Nota: O objeto senhasELinks REAL deve ser inserido AQUI
+        // Se a senha foi passada, o usuário já fez login e podemos setar os links.
+        
+        // Configuração de SENHAS e LINKS (Mantido do seu código original)
         const senhasELinks = {
             "1274": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1522031752&single=true",
             "9406": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=1634478111&single=true",
@@ -206,20 +209,27 @@
             "8493": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSOzB1hnQZN3e3WF6e3h1i1Uzpp_iyTjFFj_RWybBKkB0XMTK178W6arjbFRh0WetmdOoDyxhjia6-m/pubhtml?gid=868500341&single=true"
         };
         
-        // Atribui o link correto ao botão de Dívidas
-        if (senhasELinks.hasOwnProperty(senha)) {
+        // Configura o link do Extrato de Dívidas (linkDividas)
+        if (linkDividas && senhasELinks.hasOwnProperty(senha)) {
              linkDividas.href = senhasELinks[senha];
+        } else if (linkDividas) {
+             linkDividas.href = "index.html";
+        }
+        
+        // Configura o link do Mini Games (linkMiniGame), passando a senha na URL
+        if (linkMiniGame) {
+             linkMiniGame.href = `minigames.html?s=${senha}`;
         }
         
     } else {
-         // Se, por algum motivo, o usuário tentar acessar menu.html diretamente,
-         // ele será redirecionado para a tela de login.
-         linkDividas.href = "index.html"; // Redireciona para o login (assumindo que o login é index.html)
+        // Se a senha não existe (usuário acessou diretamente), redireciona para o login.
+        
+        // Redireciona ambos os botões para a tela de login (assumindo index.html é a tela de login)
+        if (linkDividas) linkDividas.href = "index.html";
+        if (linkMiniGame) linkMiniGame.href = "index.html"; 
     }
     
 </script>
 
 </body>
-</html>\
-
-
+</html>
