@@ -180,7 +180,7 @@
 
         <div class="game-opcoes">
             
-            <a href="#" id="linkAdivinhacao" class="game-button primary-button">
+            <a href="#" id="minigame_adivinhacao" class="game-button primary-button">
                 <span>🧠</span> Mini Game - Adivinhação
             </a>
 
