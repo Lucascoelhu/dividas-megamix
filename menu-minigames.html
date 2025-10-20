@@ -125,6 +125,20 @@
             box-shadow: 0 6px 15px rgba(255, 193, 0, 0.5);
         }
 
+        /* NOVO: Botão Secundário (Pong) - Azul Escuro */
+        .secondary-button {
+            background: var(--cor-botao-alternativo); 
+            color: var(--cor-texto-claro); 
+            border: 1px solid var(--cor-principal); /* Borda para destaque */
+        }
+
+        .secondary-button:hover {
+            background-color: var(--cor-botao-alternativo-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+
         /* Botão Em Breve (Desabilitado visualmente) */
         .disabled-button {
             background: var(--cor-desabilitado);
@@ -157,7 +171,9 @@
         }
 
         /* ======================================================= */
-        /* RODAPÉ */
+        /* RODAPÉ <a href="minigame-adivinhacao.html" class="game-button primary-button" id="linkAdivinhacao">
+                <span>🧠</span>1. Mini Game - Adivinhação
+            </a>  */ 
         /* ======================================================= */
         footer {
             text-align: center;
@@ -166,7 +182,7 @@
             padding-top: 40px;
         }
 
-    </style>
+    </style> 
 </head>
 <body>
 
@@ -180,8 +196,12 @@
 
         <div class="game-opcoes">
             
-            <a href="minigame-adivinhacao.html" class="game-button primary-button">
+            
+            <a href="minigame-adivinhacao.html" class="game-button secondary-button">
                 <span>🧠</span>1. Mini Game - Adivinhação
+            </a>
+            <a href="pong.html" class="game-button secondary-button">
+                <span>🏓</span>2. Mini Game - PONG
             </a>
 
             <a href="#" class="game-button disabled-button">
@@ -204,17 +224,18 @@
     // Pega a senha (s) passada da tela de menu (menu.html?s=1234)
     const senha = urlParams.get('s'); 
     
+    // ATUALIZADO: Usando o ID que você adicionou
     const linkAdivinhacao = document.getElementById('linkAdivinhacao');
 
     // Se a senha foi passada, anexamos ela ao link do jogo de adivinhação
     if (senha) {
-        // Altere 'adivinhacao.html' para o nome do seu arquivo de jogo real
-        linkAdivinhacao.href = `adivinhacao.html?s=${senha}`;
-    } else {
-        // Caso o usuário acesse diretamente, o link pode ser configurado para ir para a tela de login
-        // ou para uma versão padrão do jogo. Aqui, apenas aponta para o menu.
-        linkAdivinhacao.href = 'menu.html';
-    }
+        // Altere 'minigame-adivinhacao.html' para o nome do seu arquivo de jogo real
+        linkAdivinhacao.href = `minigame-adivinhacao.html?s=${senha}`;
+    } 
+    // Se a senha não for passada, o link já está configurado no HTML para 
+    // 'minigame-adivinhacao.html', então não precisamos de um 'else'.
+
+    // O link do PONG não precisa dessa lógica de senha, ele apenas aponta para 'pong.html' conforme configurado no HTML.
 </script>
 
 </body>
