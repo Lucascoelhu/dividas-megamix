@@ -9,7 +9,7 @@
         /* CSS: Estilos do Jogo - INÍCIO */
         /* ==================================== */
         
-        /* Keyframes para animação de movimento lento no fundo */
+        /* Keyframes para animação de movimento lento no fundo (mantido) */
         @keyframes moveBackground {
             from {
                 background-position: 0 0;
@@ -30,26 +30,29 @@
             flex-direction: column;
             justify-content: center; 
             align-items: center; 
-            min-height: 100vh;
+            min-height: 100vh; /* Ajustado para 100vh para melhor centralização */
             margin: 0;
-            
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            padding: 20px;
+            padding: 19px;
             color: #333;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 1000px;
+            min-height: 640px;
             margin: 0 auto;
             background: #fff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-            flex-grow: 0;
+            padding: 40px 30px;
+            border-radius: 35px;
+            box-shadow: 0 23px 16px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             z-index: 10;
-        }
+            box-sizing: border-box;
+}
+
         
         h2 {
             font-family: Georgia, serif;
@@ -66,7 +69,7 @@
             font-size: 3em;
             line-height: 1.5;
             word-spacing: 20px;
-            padding: 20px;
+            padding: 23px;
             border: 2px dashed #00bcd4;
             border-radius: 10px;
             display: flex;
@@ -76,7 +79,17 @@
             background-color: #f0f8ff;
             margin-bottom: 30px;
         }
-        button {
+        
+        /* Agrupamento de botões */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px; 
+            margin-top: 20px;
+        }
+        
+        /* Estilos base para Botões e Links com classe 'btn' */
+        button, a.btn {
             padding: 12px 25px;
             font-size: 1.2em;
             cursor: pointer;
@@ -85,9 +98,12 @@
             transition: background-color 0.3s, transform 0.2s;
             font-weight: bold;
             box-shadow: 0 4px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
         }
         
-        /* Botão Principal */
+        /* Botão Principal (Pronto) - Verde */
         #btn-pronto {
             background-color: #4CAF50;
             color: white;
@@ -101,6 +117,18 @@
             animation: none;
         }
 
+        /* Botão Secundário (Voltar) - Azul */
+        .secondary-button {
+            background-color: #007bff; /* Azul */
+            color: white;
+            box-shadow: 0 4px #0056b3;
+        }
+        .secondary-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+            box-shadow: 0 2px #0056b3;
+        }
+
         /* Keyframes para animação do botão */
         @keyframes pulse-button {
             0% { transform: scale(1); }
@@ -108,28 +136,55 @@
             100% { transform: scale(1); }
         }
 
-        /* Estilos das perguntas */
-        .pergunta-lista {
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #e9f5ff;
-            opacity: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
-        }
-        .pergunta-lista.active {
-            opacity: 1;
-            max-height: 500px;
-            animation: fadeIn 0.5s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ==================================================== */
+        /* CORREÇÃO CHAVE: Sobreposição e Altura Fixa */
+        /* ==================================================== */
+        
+        /* 1. Container Principal das Perguntas */
+        #tela-perguntas {
+            /* Essencial: Altura mínima fixa para que a transição ocorra dentro de um espaço imutável */
+            min-height: 550px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
         }
         
+        /* 2. Container RELATIVO que gerencia as listas ABSOLUTAS */
+        #listas-container {
+            position: relative;
+            /* Altura fixa o suficiente para a lista mais longa */
+            min-height: 396px; 
+            width: 329%; /* Ocupa a largura total do pai */
+            margin-bottom: 20px; /* Espaço entre o container de listas e o botão reiniciar */
+        }
+
+        /* 3. Estilos das Perguntas (Posicionamento Absoluto) */
+        .pergunta-lista {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%; /* Ocupa a largura do listas-container */
+            box-sizing: border-box; /* Inclui padding e borda na largura */
+            border: 2px solid #007bff;
+            border-radius: 8px; /* Ajustado para um visual mais limpo */
+            padding: 12px;
+            background-color: #e9f5ff;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .pergunta-lista.active {
+            opacity: 1;
+            transform: translateY(0);
+            z-index: 2;
+        }
+        
+        /* Fim da Correção Chave */
+        /* ==================================================== */
+
         .lista-simbolos {
             font-size: 1.5em;
             line-height: 1.5;
@@ -141,7 +196,7 @@
         .resposta-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 29px;
         }
         .resposta-container button {
             margin: 0 15px;
@@ -150,32 +205,43 @@
         /* Botões SIM / NÃO */
         .resposta-container button.sim {
             background-color: #4CAF50;
+            color: white;
+            box-shadow: 0 4px #388e3c;
         }
         .resposta-container button.nao {
             background-color: #f44336;
+            color: white;
+            box-shadow: 0 4px #d32f2f;
         }
         
         /* Animação de Pressionar: Quando o botão é ativado (clicado) */
         .resposta-container button:active {
             transform: scale(0.95);
-            box-shadow: 0 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px rgba(0, 0, 0, 0.2); 
         }
         
         /* Estilos do Resultado */
         #resultado {
             font-size: 3em;
             color: #007bff;
-            margin-top: 30px;
-            padding: 15px;
-            border: 3px dashed #ff9800;
-            border-radius: 10px;
+            margin-top: 10px; 
+            padding: 28px;
+            border: 4px dashed #ff9800;
+            border-radius: 50px;
             display: none;
             flex-direction: column;
             align-items: center;
         }
+
+        /* Botão Reiniciar */
         #btn-reiniciar {
-             background-color: #f44336 !important; 
-             box-shadow: 0 4px #d32f2f;
+            background-color: #f44336 !important; 
+            box-shadow: 0 4px #d32f2f;
+            /* Centralização Horizontal */
+            display: block !important; 
+            margin-left: auto !important;
+            margin-right: auto !important;
+            margin-top: 20px !important; 
         }
         
         /* Estilos específicos para a tela de apresentação */
@@ -187,9 +253,9 @@
         }
 
         /* ---------------------------------------------------- */
-        /* REGRAS DE MEDIA QUERY (OTIMIZAÇÃO MOBILE) - ADICIONADO */
+        /* REGRAS DE MEDIA QUERY (OTIMIZAÇÃO MOBILE) */
         /* ---------------------------------------------------- */
-        @media (max-width: 600px) {
+        @media (max-width: 300px) {
             .simbolo-grade {
                 font-size: 2.5em; 
                 word-spacing: 10px;
@@ -204,6 +270,17 @@
             }
             #resultado {
                 font-size: 2em;
+            }
+            
+            /* Quebra de linha nos botões para telas pequenas */
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            /* NOVO: Ajuste do container de listas em telas menores */
+            #listas-container {
+                min-height: 420px; /* Mais altura para acomodar as listas em menos colunas */
             }
         }
         
@@ -222,7 +299,13 @@
             <div id="simbolos-todos" class="simbolo-grade">
                 </div>
             
-            <button id="btn-pronto">Estou pronto!</button>
+            <div class="button-group">
+                
+                <a href="index.html" class="btn secondary-button">Voltar ao Menu</a>
+                
+                <button id="btn-pronto">Estou pronto!</button>
+                
+            </div>
         </div>
 
         <div id="tela-perguntas" style="display: none;">
@@ -233,7 +316,7 @@
             <div id="resultado">
                 </div>
             
-            <button id="btn-reiniciar" style="background-color: #dc3545; color: white; margin-top: 20px; display: none;">Reiniciar Jogo</button>
+            <button id="btn-reiniciar" style="color: white; display: none;">Reiniciar Jogo</button>
         </div>
     </div> <p style="margin-top: 50px; color: #888; font-size: 0.9em;">Criado por: Lucas Coelho, 2025</p>
 
@@ -247,7 +330,6 @@
         let listaAtualIndex = 0;
 
         // --- 1. TABELA DE CONVERSÃO COMPLETA (1 a 63) ---
-        // Usamos os emojis que você me enviou
         const tabelaSimbolos = {
             1: '☀️', 2: '☁️', 3: '☔', 4: '⚡', 5: '❄️', 6: '🔥', 7: '💧', 8: '🌊', 9: '🌪️', 10: '⛰️',
             11: '⛺', 12: '🏠', 13: '🚗', 14: '🚲', 15: '✈️', 16: '⛵', 17: '🚀', 18: '⏰', 19: '⏳', 20: '⌛',
@@ -266,7 +348,7 @@
                     simbolosLista.push(tabelaSimbolos[i]);
                 }
             }
-            return simbolosLista.join(', ');
+            return simbolosLista.join(' '); // Removido a vírgula para mais espaço
         }
         
         // --- 3. Dados das Listas (Bit e Símbolos) ---
@@ -314,15 +396,15 @@
 
         // Exibe a lista atual e oculta a anterior (com animação)
         function mostrarProximaLista() {
-            // Se já tivermos percorrido todas as listas, calcule o resultado final
-            if (listaAtualIndex >= listas.length) {
-                mostrarResultadoFinal();
-                return;
-            }
-
-            // Oculta a lista anterior
+            // Oculta a lista anterior (se houver)
             if (listaAtualIndex > 0) {
                 elementosLista[listaAtualIndex - 1].classList.remove('active');
+            }
+            
+            // Se já tivermos percorrido todas as listas, calcule o resultado final
+            if (listaAtualIndex >= listas.length) {
+                setTimeout(mostrarResultadoFinal, 500); // Adiciona um pequeno delay após a última pergunta sumir
+                return;
             }
 
             // Mostra a lista atual
@@ -330,33 +412,38 @@
         }
 
         // Função chamada ao clicar SIM ou NÃO
-        function responderPergunta(valorBinario, sim) {
-            // 1. Oculta a lista atual
-            elementosLista[listaAtualIndex].classList.remove('active');
+        window.responderPergunta = function(valorBinario, sim) {
             
-            // 2. Realiza a Soma Binária
+            // 1. Realiza a Soma Binária
             if (sim) {
                 somaFinal += valorBinario;
             }
+            
+            // 2. Oculta a lista atual
+            elementosLista[listaAtualIndex].classList.remove('active');
             
             // 3. Move para a próxima lista
             listaAtualIndex++;
             
             // 4. Mostra a próxima lista ou o resultado
-            setTimeout(mostrarProximaLista, 500); // 500ms de atraso para a animação
+            // Ocultar a lista anterior e mostrar a próxima é feito em duas etapas (transição)
+            setTimeout(mostrarProximaLista, 400); // 400ms (igual ao tempo de transição do CSS) para a transição suave
         }
 
         // --- FUNÇÃO MODIFICADA PARA SUSPENSE ---
         function mostrarResultadoFinal() {
             const simboloResultado = tabelaSimbolos[somaFinal];
             
+            // Oculta o contêiner das listas
+            listasContainer.style.display = 'none'; 
+
             // Adiciona o suspense antes de revelar o resultado final
-            resultadoDiv.style.display = 'block';
+            resultadoDiv.style.display = 'flex'; // Use flex para centralizar
             resultadoDiv.innerHTML = `<h1>... Pensando ...</h1>`;
             
             setTimeout(() => {
                 if (somaFinal === 0) {
-                    resultadoDiv.innerHTML = `Ops! Você não marcou nenhuma lista. Tente novamente!`;
+                    resultadoDiv.innerHTML = `<p style="font-size: 1.2em; color: #f44336; text-align: center;">Ops! Você não marcou nenhuma lista ou escolheu o símbolo número 64 (não existe). Tente novamente!</p>`;
                 } else {
                     // Mensagem de suspense e a revelação do símbolo
                     resultadoDiv.innerHTML = `
@@ -368,21 +455,25 @@
             }, 1500); // 1.5 segundos de suspense
 
             // CSS de animação para o suspense 
-            const style = document.createElement('style');
-            style.innerHTML = `
-                @keyframes pulse {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.1); }
-                    100% { transform: scale(1); }
-                }
-            `;
-            document.head.appendChild(style);
+            let style = document.querySelector('#pulse-style');
+            if (!style) {
+                 style = document.createElement('style');
+                 style.id = 'pulse-style';
+                 style.innerHTML = `
+                    @keyframes pulse {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.1); }
+                        100% { transform: scale(1); }
+                    }
+                 `;
+                 document.head.appendChild(style);
+            }
         }
 
         // --- 5. Eventos de Botão ---
         document.getElementById('btn-pronto').addEventListener('click', () => {
             telaApresentacao.style.display = 'none';
-            telaPerguntas.style.display = 'block';
+            telaPerguntas.style.display = 'flex'; // Mudar de block para flex para centralizar
             mostrarProximaLista(); // Começa na primeira lista
         });
 
@@ -390,11 +481,12 @@
         btnReiniciar.addEventListener('click', () => {
             somaFinal = 0;
             listaAtualIndex = 0;
+            listasContainer.style.display = 'block'; // Volta a mostrar o contêiner de listas
             elementosLista.forEach(el => el.classList.remove('active')); // Oculta todas
             resultadoDiv.style.display = 'none';
             btnReiniciar.style.display = 'none';
             telaPerguntas.style.display = 'none';
-            telaApresentacao.style.display = 'block'; // Volta para a tela de apresentação
+            telaApresentacao.style.display = 'flex'; // Volta para a tela de apresentação
         });
 
     </script>
