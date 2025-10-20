@@ -105,7 +105,7 @@ button, a.btn {
 
 /* ======== RESULTADO ======== */
 #resultado {
-    font-size: 2.5em;
+    font-size: 2.3em;
     color: #007bff;
     border: 4px dashed #ff9800;
     border-radius: 25px;
@@ -124,7 +124,7 @@ button, a.btn {
     .lista-simbolos { font-size: 1.3em; }
     .resposta-container { flex-direction: column; width: 100%; }
     .resposta-container button { width: 100%; }
-    #resultado { font-size: 2em; padding: 15px; }
+    #resultado { font-size: 1.8em; padding: 15px; }
 }
 </style>
 </head>
@@ -163,6 +163,20 @@ const tabelaSimbolos = {
   61:'ℹ️',62:'❓',63:'❗'
 };
 
+// === Frases Engraçadas ===
+const frasesEngracadas = [
+  "🧐 Você tem certeza? O 'Sim' não morde!",
+  "😅 Ahhh… você quase acertou! Tenta de novo, vai.",
+  "🤔 Hmm… esse botão de 'Não' parece suspeito.",
+  "😂 Errar é humano, clicar em 'Não' é arte!",
+  "🙃 Parabéns! Você ganhou… nada! Quer tentar de novo?",
+  "🐢 O botão certo fugiu! Corre atrás dele e tenta de novo.",
+  "😜 Clicou em 'Não'? O jogo ficou triste agora.",
+  "🤪 Ei, o 'Não' é só enfeite! Aperta o outro!",
+  "🧠 Parece que o cérebro tirou férias, hein?",
+  "🦥 Esse clique foi lento… mas dá pra tentar de novo!"
+];
+
 const gerarListaSimbolos = v => Object.entries(tabelaSimbolos)
   .filter(([i]) => (i & v) == v)
   .map(([,s]) => s).join(' ');
@@ -197,7 +211,7 @@ function mostrarProximaLista(){
   if(listaAtualIndex>0)elementosLista[listaAtualIndex-1].classList.remove('active');
   if(listaAtualIndex>=listas.length)return setTimeout(mostrarResultado,400);
   elementosLista[listaAtualIndex].classList.add('active');
-}
+} 
 
 window.responder=function(v,sim){
   if(sim)somaFinal+=v;
@@ -212,9 +226,12 @@ function mostrarResultado(){
   resultadoDiv.innerHTML='<h3>... Pensando ...</h3>';
   setTimeout(()=>{
     const s=tabelaSimbolos[somaFinal];
-    resultadoDiv.innerHTML = s ? 
-      `<p>O gênio adivinhou! Seu símbolo é...</p><span style="font-size:4em;">${s}</span>` :
-      `<p style="color:#f44336;">Ops! Tente novamente.</p>`;
+    if(s){
+      resultadoDiv.innerHTML = `<p>O gênio adivinhou! Seu símbolo é...</p><span style="font-size:4em;">${s}</span>`;
+    } else {
+      const frase = frasesEngracadas[Math.floor(Math.random() * frasesEngracadas.length)];
+      resultadoDiv.innerHTML = `<p style="color:#f44336;">${frase}</p>`;
+    }
     btnReiniciar.style.display='block';
   },1500);
 }
@@ -224,10 +241,7 @@ document.getElementById('btn-pronto').onclick=()=>{
   telaPerguntas.style.display='flex';
   mostrarProximaLista();
 };
-btnReiniciar.onclick = () => {
-  location.reload();
-};
-
+btnReiniciar.onclick = () => location.reload();
 </script>
 </body>
 </html>
