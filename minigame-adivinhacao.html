@@ -6,7 +6,6 @@
 <title>Adivinhe o Símbolo!</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
 <style>
-/* ======== ESTILOS GERAIS ======== */
 body {
     background-color: #f0faff;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><text x='10' y='40' style='font-size:25px;opacity:0.15;'>☀️</text><text x='60' y='80' style='font-size:25px;opacity:0.15;'>☔</text><text x='35' y='10' style='font-size:25px;opacity:0.15;'>❓</text></svg>");
@@ -21,8 +20,6 @@ body {
     padding: 20px;
     color: #333;
 }
-
-/* ======== CONTAINER ======== */
 .container {
     max-width: 600px;
     width: 100%;
@@ -35,8 +32,6 @@ body {
     align-items: center;
     box-sizing: border-box;
 }
-
-/* ======== TÍTULOS E TEXTOS ======== */
 h2 {
     font-family: 'Roboto Slab', serif;
     color: #ff5722;
@@ -46,8 +41,6 @@ h2 {
     text-align: center;
 }
 p { text-align: center; }
-
-/* ======== LISTA DE SÍMBOLOS ======== */
 .simbolo-grade {
     font-size: 2.5em;
     line-height: 1.4;
@@ -61,8 +54,6 @@ p { text-align: center; }
     padding: 15px;
     margin-bottom: 25px;
 }
-
-/* ======== BOTÕES ======== */
 button, a.btn {
     padding: 12px 25px;
     font-size: 1.1em;
@@ -79,10 +70,8 @@ button, a.btn {
 #btn-pronto:hover { background-color: #388e3c; transform: scale(1.05); animation: none; }
 .secondary-button { background-color: #007bff; box-shadow: 0 4px #0056b3; }
 .secondary-button:hover { background-color: #0056b3; transform: scale(1.05); }
-
 @keyframes pulse { 0%,100%{transform:scale(1);}50%{transform:scale(1.05);} }
 
-/* ======== PERGUNTAS ======== */
 #tela-perguntas { display: none; width: 100%; flex-direction: column; align-items: center; }
 .pergunta-lista {
     border: 2px solid #007bff;
@@ -103,7 +92,6 @@ button, a.btn {
 .resposta-container button.nao { background-color: #f44336; box-shadow: 0 4px #d32f2f; }
 .resposta-container button:active { transform: scale(0.95); }
 
-/* ======== RESULTADO ======== */
 #resultado {
     font-size: 2.3em;
     color: #007bff;
@@ -115,8 +103,6 @@ button, a.btn {
     display: none;
 }
 #btn-reiniciar { background-color: #f44336; margin-top: 20px; }
-
-/* ======== MOBILE ======== */
 @media (max-width: 480px) {
     .container { padding: 25px 15px; border-radius: 25px; }
     h2 { font-size: 1.3em; }
@@ -151,19 +137,23 @@ button, a.btn {
 <p style="margin-top:40px;color:#888;font-size:0.9em;">Criado por: Lucas Coelho, 2025</p>
 
 <script>
-// ======== JAVASCRIPT DO JOGO ======== //
 let somaFinal = 0, listaAtualIndex = 0;
-const tabelaSimbolos = {
-  1:'☀️',2:'☁️',3:'☔',4:'⚡',5:'❄️',6:'🔥',7:'💧',8:'🌊',9:'🌪️',10:'⛰️',
-  11:'⛺',12:'🏠',13:'🚗',14:'🚲',15:'✈️',16:'⛵',17:'🚀',18:'⏰',19:'⏳',20:'⌛',
-  21:'⌚',22:'📱',23:'💻',24:'💾',25:'💿',26:'📸',27:'📹',28:'🎙️',29:'🎧',30:'📣',
-  31:'🔔',32:'✉️',33:'📝',34:'📌',35:'📎',36:'🔑',37:'🔒',38:'🔓',39:'➕',40:'➖',
-  41:'✖️',42:'➗',43:'⬆️',44:'⬇️',45:'⬅️',46:'➡️',47:'↖️',48:'↘️',49:'↙️',50:'↗️',
-  51:'▶️',52:'⏸️',53:'⏹️',54:'⏭️',55:'⏮️',56:'⏫',57:'⏬',58:'⏩',59:'⏪',60:'🔄',
-  61:'ℹ️',62:'❓',63:'❗'
-};
 
-// === Frases Engraçadas ===
+// 🔹 127 símbolos únicos
+const simbolosDisponiveis = [
+'☀️','☁️','☔','⚡','❄️','🔥','💧','🌊','🌪️','⛰️','⛺','🏠','🚗','🚲','✈️','⛵',
+'🚀','🛸','🪐','🌙','⭐','🌈','🌻','🌳','🌴','🍀','🍎','🍉','🍌','🍇','🥥','🌽',
+'🍞','🥩','🍕','🍔','🍟','🍣','🎂','🍩','🎈','🎉','🎮','🎲','🧩','⚽','🏀','🏆',
+'🎯','🎤','🎧','🎹','🎸','🎺','🎻','📱','💻','🖥️','📷','🎥','📺','⏰','⌛','🕹️',
+'💡','🔦','🔋','🔑','💎','💰','💣','🪙','❤️','💔','💖','💀','👑','🧠','👀','👂',
+'🖐️','🦶','👣','🧤','🪶','🐶','🐱','🐸','🐢','🐍','🦜','🦋','🐞','🐟','🐠','🐬',
+'🐘','🦒','🦓','🦁','🐺','🐯','🐴','🐷','🐮','🐔','🦆','🐧','🐤','🐣','🐥','🐝',
+'🐛','🦗','🕷️','🕸️','🦂','🦀','🐙','🪼','🐡','🐊','🦖','🦕','🦭','🐼','🐻','🦊'
+];
+
+const tabelaSimbolos = {};
+for(let i=1;i<=simbolosDisponiveis.length;i++){tabelaSimbolos[i]=simbolosDisponiveis[i-1];}
+
 const frasesEngracadas = [
   "🧐 Você tem certeza? O 'Sim' não morde!",
   "😅 Ahhh… você quase acertou! Tenta de novo, vai.",
@@ -181,7 +171,9 @@ const gerarListaSimbolos = v => Object.entries(tabelaSimbolos)
   .filter(([i]) => (i & v) == v)
   .map(([,s]) => s).join(' ');
 
-const listas = [1,2,4,8,16,32].map(v=>({valor:v,simbolos:gerarListaSimbolos(v)}));
+// 🔹 7 grupos (1–64)
+const listas = [1,2,4,8,16,32,64].map(v=>({valor:v,simbolos:gerarListaSimbolos(v)}));
+
 const simbolosTodosDiv=document.getElementById('simbolos-todos');
 simbolosTodosDiv.innerHTML=Object.values(tabelaSimbolos).join(' ');
 
