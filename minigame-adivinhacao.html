@@ -115,6 +115,7 @@ button, a.btn {
     display: none;
 }
 #btn-reiniciar { background-color: #f44336; margin-top: 20px; }
+
 @media (max-width: 480px) {
     .container { padding: 25px 15px; border-radius: 25px; }
     h2 { font-size: 1.3em; }
@@ -150,6 +151,7 @@ button, a.btn {
 <p style="margin-top:40px;color:#888;font-size:0.9em;">Criado por: Lucas Coelho, 2025</p>
 
 <script>
+// ======== CONFIGURAÇÃO ======== //
 let somaFinal = 0, listaAtualIndex = 0;
 
 const simbolosDisponiveis = [
@@ -176,6 +178,11 @@ const frasesEngracadas = [
   "🧠 Parece que o cérebro tirou férias, hein?"
 ];
 
+// ======== SONS ======== //
+const somAcerto = new Audio("https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3");
+const somErro = new Audio("https://assets.mixkit.co/active_storage/sfx/2745/2745-preview.mp3");
+
+// ======== FUNÇÕES ======== //
 const gerarListaSimbolos = v => Object.entries(tabelaSimbolos)
   .filter(([i]) => (i & v) == v)
   .map(([,s]) => s).join(' ');
@@ -234,8 +241,10 @@ function mostrarResultado(){
   setTimeout(()=>{
     const s=tabelaSimbolos[somaFinal];
     if(s){
+      somAcerto.play();
       resultadoDiv.innerHTML = `<p>O gênio adivinhou! Seu símbolo é...</p><span style="font-size:4em;">${s}</span>`;
     } else {
+      somErro.play();
       const frase = frasesEngracadas[Math.floor(Math.random() * frasesEngracadas.length)];
       resultadoDiv.innerHTML = `<p style="color:#f44336;">${frase}</p>`;
     }
