@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PONG Ultra-Divertido (Visual Melhorado)</title>
+    <title>PONG Ultra-Divertido (Visual Renovado)</title>
     <style>
         body {
             display: flex;
@@ -21,16 +21,18 @@
         /* Importa a fonte do Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+        /* COR PRINCIPAL DO JOGO: CIANO NÉON (#00bcd4) */
+
         h1 {
             margin-bottom: 10px;
-            color: #00e676; /* Verde néon mais vibrante */
-            text-shadow: 0 0 12px #00e676, 0 0 24px #00e676; /* Brilho maior */
+            color: #00bcd4; /* Ciano néon mais vibrante */
+            text-shadow: 0 0 12px #00bcd4, 0 0 24px #00bcd4; /* Brilho maior */
         }
 
         #gameCanvas {
-            border: 5px solid #00e676; /* Borda do canvas em néon */
+            border: 5px solid #00bcd4; /* Borda do canvas em néon */
             background-color: #000000;
-            box-shadow: 0 0 25px rgba(0, 230, 118, 0.7); /* Sombra néon mais intensa */
+            box-shadow: 0 0 25px rgba(0, 188, 212, 0.7); /* Sombra néon mais intensa */
         }
 
         /* Botão Principal JOGAR */
@@ -42,33 +44,33 @@
             padding: 15px 30px;
             font-size: 1.5em;
             font-weight: bold;
-            color: #1a1a1a; /* Texto mais escuro para contraste */
-            background-color: #ffeb3b; /* Amarelo néon */
-            border: 5px solid #ffd600; /* Borda amarela mais forte */
+            color: #1a1a1a; 
+            background-color: #ff9800; /* Laranja Néon (Cor da Bola/Ação) */
+            border: 5px solid #ff7043; 
             border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.1s, transform 0.1s, box-shadow 0.1s;
             user-select: none; 
-            box-shadow: 0 0 18px rgba(255, 235, 59, 0.9); /* Sombra néon mais forte */
+            box-shadow: 0 0 18px rgba(255, 152, 0, 0.9); 
             font-family: 'Press Start 2P', cursive, monospace;
         }
 
         .botao-principal:hover {
-            background-color: #ffff80;
+            background-color: #ffcc80;
             transform: scale(1.05);
-            box-shadow: 0 0 25px rgba(255, 255, 128, 1);
+            box-shadow: 0 0 25px rgba(255, 204, 128, 1);
         }
         .botao-principal:active {
             transform: scale(0.95);
         }
 
-        /* Estilo para o novo botão VOLTAR */
+        /* Estilo para o botão VOLTAR */
         #menuBtn {
             padding: 10px 20px;
             font-size: 1.0em;
             font-weight: bold;
-            color: #e0e0e0; /* Cinza claro */
-            background-color: #3f51b5; /* Azul (diferente dos outros para destaque) */
+            color: #e0e0e0; 
+            background-color: #3f51b5; 
             border: 3px solid #303f9f; 
             border-radius: 8px;
             cursor: pointer;
@@ -76,7 +78,7 @@
             user-select: none; 
             box-shadow: 0 0 10px rgba(63, 81, 181, 0.5);
             font-family: 'Press Start 2P', cursive, monospace;
-            margin-top: 15px; /* Espaço após as instruções */
+            margin-top: 15px; 
         }
 
         #menuBtn:hover {
@@ -85,38 +87,39 @@
             box-shadow: 0 0 15px rgba(121, 134, 203, 1);
         }
         
-        /* Botões Direcionais */
+        /* Botões Direcionais (MAIORES E MAIS ESPAÇADOS) */
         #controles-direcionais {
             display: flex;
-            gap: 15px;
+            gap: 40px; /* MUITO MAIS ESPAÇO entre os botões */
+            margin-top: 25px; /* Mais espaço do canvas */
         }
 
         .botao-controle {
-            padding: 10px 20px;
-            font-size: 1.2em;
+            padding: 20px 45px; /* MAIOR AINDA o padding */
+            font-size: 1.8em; /* Fonte ainda maior */
             font-weight: bold;
             color: #1a1a1a;
-            background-color: #00e676; /* Verde néon */
-            border: 3px solid #00c853; /* Borda verde mais forte */
-            border-radius: 8px;
+            background-color: #00bcd4; /* Ciano Néon (Cor da Raquete) */
+            border: 4px solid #0097a7; 
+            border-radius: 15px; /* Arredondei um pouco mais */
             cursor: pointer;
             transition: background-color 0.1s, transform 0.1s, box-shadow 0.1s;
             user-select: none; 
-            box-shadow: 0 0 12px rgba(0, 230, 118, 0.7); /* Sombra néon */
+            box-shadow: 0 0 18px rgba(0, 188, 212, 0.9); /* Sombra néon mais forte */
             font-family: 'Press Start 2P', cursive, monospace;
         }
 
         .botao-controle:hover {
-            background-color: #69f0ae;
+            background-color: #4dd0e1;
             transform: scale(1.05);
-            box-shadow: 0 0 18px rgba(105, 240, 174, 1);
+            box-shadow: 0 0 25px rgba(77, 208, 225, 1);
         }
         .botao-controle:active {
             transform: scale(0.95);
         }
 
         #instrucoes {
-            margin-top: 15px;
+            margin-top: 20px; /* Mais espaço */
             font-size: 0.9em; 
             color: #999;
             text-align: center;
@@ -128,8 +131,10 @@
                 width: 90vw;
                 height: 60vw;
             }
-            .botao-principal { padding: 10px 20px; font-size: 1.2em; }
-            .botao-controle { padding: 8px 15px; font-size: 1em; }
+            .botao-principal { padding: 12px 25px; font-size: 1.3em; }
+            /* Ajuste para mobile */
+            .botao-controle { padding: 15px 35px; font-size: 1.5em; } 
+            #controles-direcionais { gap: 20px; margin-top: 15px; } /* Reduz o gap no mobile */
             #menuBtn { font-size: 0.9em; padding: 8px 15px; }
         }
         
@@ -157,8 +162,8 @@
     </div>
 
     <div id="instrucoes">
-        Controles: <span style="color: #ffeb3b;">W</span> e <span style="color: #ffeb3b;">S</span> ou os botões de controle.
-        <br>Pressione <span style="color: #ffeb3b;">ESPAÇO</span> ou **JOGAR** para iniciar.
+        Use os botões **CIMA** e **BAIXO** para controlar.
+        <br>Pressione <span style="color: #ff9800;">ESPAÇO</span> ou **JOGAR** para iniciar!
     </div>
 
     <button id="menuBtn">Voltar ao Menu</button> 
@@ -290,15 +295,15 @@
         }
 
         function drawRacket(x, y) {
-            ctx.fillStyle = '#00e676'; 
+            ctx.fillStyle = '#00bcd4'; /* CIANO NÉON */
             ctx.fillRect(x, y, RACKET_W, RACKET_H);
             
-            ctx.strokeStyle = '#00c853'; 
+            ctx.strokeStyle = '#0097a7'; 
             ctx.lineWidth = 2 * (W / 800); 
             ctx.strokeRect(x, y, RACKET_W, RACKET_H);
 
             ctx.shadowBlur = 10; 
-            ctx.shadowColor = '#00e676';
+            ctx.shadowColor = '#00bcd4';
             ctx.fillRect(x, y, RACKET_W, RACKET_H); 
             ctx.shadowBlur = 0; 
         }
@@ -306,16 +311,16 @@
         function drawBall() {
             ctx.beginPath();
             ctx.arc(ballX, ballY, BALL_SIZE / 2, 0, Math.PI * 2);
-            ctx.fillStyle = '#ffeb3b'; 
+            ctx.fillStyle = '#ff9800'; /* LARANJA NÉON */
             ctx.shadowBlur = 15; 
-            ctx.shadowColor = '#ffeb3b';
+            ctx.shadowColor = '#ff9800';
             ctx.fill();
             ctx.closePath();
             ctx.shadowBlur = 0; 
         }
 
         function drawScoreAndNet() {
-            ctx.strokeStyle = '#00e676'; 
+            ctx.strokeStyle = '#00bcd4'; /* CIANO NÉON */
             ctx.lineWidth = 4 * (W / 800); 
             ctx.setLineDash([15, 10]); 
             ctx.beginPath();
@@ -414,7 +419,7 @@
             ballX += ballSpeedX;
             ballY += ballSpeedY;
             
-            createParticles(ballX, ballY, 1, '#ffeb3b'); 
+            createParticles(ballX, ballY, 1, '#ff9800'); /* Partículas LARANJA */
 
             // Colisão com teto/chão
             if (ballY < BALL_SIZE / 2 || ballY > H - BALL_SIZE / 2) {
@@ -520,7 +525,7 @@
         
         // --- Controle de Input ---
 
-        // Teclado (ainda suportado)
+        // Teclado (Manter para desktop)
         document.addEventListener('keydown', (e) => {
             if (gameState === 'playing') {
                 if (e.key === 'w' || e.key === 'W') {
@@ -544,7 +549,7 @@
             }
         });
 
-        // Botão JOGAR/REINICIAR (Apenas usa 'click' para iniciar/reiniciar com mais compatibilidade)
+        // Botão JOGAR/REINICIAR
         const playBtn = document.getElementById('playBtn');
         
         function handleStartRestart() {
@@ -555,14 +560,14 @@
         
         playBtn.addEventListener('click', handleStartRestart);
         
-        // Botão VOLTAR AO MENU (NOVO)
+        // Botão VOLTAR AO MENU
         const menuBtn = document.getElementById('menuBtn');
         menuBtn.addEventListener('click', () => {
-            // Redireciona para o arquivo index.html na mesma pasta
+            // Redireciona para o arquivo menu-minigames.html na mesma pasta
             window.location.href = 'menu-minigames.html'; 
         });
 
-        // Botões Direcionais (Usam touchstart/touchend para movimento contínuo)
+        // Botões Direcionais (Mobile/Mouse)
         const upBtn = document.getElementById('upBtn');
         const downBtn = document.getElementById('downBtn');
 
@@ -579,12 +584,14 @@
         // Eventos para o botão "Cima"
         upBtn.addEventListener('mousedown', () => startMoving(-1));
         upBtn.addEventListener('mouseup', stopMoving);
+        upBtn.addEventListener('mouseleave', stopMoving); 
         upBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startMoving(-1); }); 
         upBtn.addEventListener('touchend', stopMoving);
 
         // Eventos para o botão "Baixo"
         downBtn.addEventListener('mousedown', () => startMoving(1));
         downBtn.addEventListener('mouseup', stopMoving);
+        downBtn.addEventListener('mouseleave', stopMoving); 
         downBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startMoving(1); }); 
         downBtn.addEventListener('touchend', stopMoving);
         
