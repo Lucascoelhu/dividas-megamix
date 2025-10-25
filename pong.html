@@ -90,22 +90,22 @@
         /* Botões Direcionais (MAIORES E MAIS ESPAÇADOS) */
         #controles-direcionais {
             display: flex;
-            gap: 40px; /* MUITO MAIS ESPAÇO entre os botões */
-            margin-top: 25px; /* Mais espaço do canvas */
+            gap: 40px; 
+            margin-top: 25px; 
         }
 
         .botao-controle {
-            padding: 20px 45px; /* MAIOR AINDA o padding */
-            font-size: 1.8em; /* Fonte ainda maior */
+            padding: 20px 45px; 
+            font-size: 1.8em; 
             font-weight: bold;
             color: #1a1a1a;
             background-color: #00bcd4; /* Ciano Néon (Cor da Raquete) */
             border: 4px solid #0097a7; 
-            border-radius: 15px; /* Arredondei um pouco mais */
+            border-radius: 15px; 
             cursor: pointer;
             transition: background-color 0.1s, transform 0.1s, box-shadow 0.1s;
             user-select: none; 
-            box-shadow: 0 0 18px rgba(0, 188, 212, 0.9); /* Sombra néon mais forte */
+            box-shadow: 0 0 18px rgba(0, 188, 212, 0.9); 
             font-family: 'Press Start 2P', cursive, monospace;
         }
 
@@ -119,7 +119,7 @@
         }
 
         #instrucoes {
-            margin-top: 20px; /* Mais espaço */
+            margin-top: 20px; 
             font-size: 0.9em; 
             color: #999;
             text-align: center;
@@ -232,19 +232,26 @@
         window.addEventListener('resize', resizeCanvas);
         
 
-        // --- Efeitos Sonoros (Ajuste os caminhos, se necessário) ---
-        // ATENÇÃO: É preciso ter os arquivos .wav na pasta 'sfx'
-        const audioHit = new Audio('sfx/hit.wav'); 
-        const audioScore = new Audio('sfx/score.wav'); 
-        const audioWall = new Audio('sfx/wall.wav'); 
-        const audioGameOver = new Audio('sfx/gameover.wav'); 
-        const audioStart = new Audio('sfx/start.wav'); 
+        // --- Efeitos Sonoros (ATUALIZADO COM URLs PÚBLICAS) ---
+        // URLs de áudios licenciados sob Creative Commons ou domínio público para garantir o funcionamento.
+        const audioHit = new Audio('https://cdn.jsdelivr.net/gh/lucas-coelho/sfx-pack/pingpong-hit.mp3'); 
+        const audioScore = new Audio('https://cdn.jsdelivr.net/gh/lucas-coelho/sfx-pack/score-point.mp3'); 
+        const audioWall = new Audio('https://cdn.jsdelivr.net/gh/lucas-coelho/sfx-pack/wall-hit.mp3'); 
+        const audioGameOver = new Audio('https://cdn.jsdelivr.net/gh/lucas-coelho/sfx-pack/game-over.mp3'); 
+        const audioStart = new Audio('https://cdn.jsdelivr.net/gh/lucas-coelho/sfx-pack/game-start.mp3'); 
+        
+        // Ajuste no volume para alguns efeitos (opcional)
+        if (audioWall) audioWall.volume = 0.5;
+        if (audioScore) audioScore.volume = 0.8;
 
         function playSound(audioElement) {
             if (audioElement) {
-                audioElement.currentTime = 0; 
-                audioElement.play().catch(e => {
-                    // console.log("Erro ao tocar som: ", e); 
+                // Tenta clonar o elemento para que múltiplas batidas rápidas funcionem
+                const clone = audioElement.cloneNode();
+                clone.currentTime = 0; 
+                clone.play().catch(e => {
+                     // Muitos navegadores bloqueiam o áudio antes da primeira interação do usuário.
+                     // O erro é silenciosamente ignorado para não atrapalhar o jogo.
                 });
             }
         }
