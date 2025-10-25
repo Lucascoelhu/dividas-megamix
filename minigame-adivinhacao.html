@@ -87,10 +87,22 @@ button, a.btn {
 }
 .pergunta-lista.active { opacity: 1; transform: translateY(0); z-index: 2; }
 .lista-simbolos { font-size: 1.6em; text-align: center; margin: 10px 0; }
-.resposta-container { display: flex; justify-content: center; gap: 20px; margin-top: 15px; }
+.resposta-container { display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap; }
 .resposta-container button.sim { background-color: #4CAF50; box-shadow: 0 4px #388e3c; }
 .resposta-container button.nao { background-color: #f44336; box-shadow: 0 4px #d32f2f; }
 .resposta-container button:active { transform: scale(0.95); }
+
+#contador {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #007bff;
+    font-size: 1.1em;
+    background: #e3f2fd;
+    padding: 8px 18px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: none;
+}
 
 #resultado {
     font-size: 2.3em;
@@ -118,7 +130,7 @@ button, a.btn {
 
 <div class="container">
     <div id="tela-apresentacao">
-        <h2>PENSE EM 1 SÍMBOLO</h2>
+        <h2>PENSE EM UM SÍMBOLO</h2>
         <p>Memorize um símbolo da lista abaixo e clique em "Estou pronto!"</p>
         <div id="simbolos-todos" class="simbolo-grade"></div>
         <div style="display:flex;gap:15px;flex-wrap:wrap;justify-content:center;">
@@ -128,6 +140,7 @@ button, a.btn {
     </div>
 
     <div id="tela-perguntas">
+        <div id="contador">Pergunta 1 de 7</div>
         <div id="listas-container" style="position:relative;min-height:420px;width:100%;"></div>
         <div id="resultado"></div>
         <button id="btn-reiniciar" style="display:none;">Reiniciar Jogo</button>
@@ -139,7 +152,6 @@ button, a.btn {
 <script>
 let somaFinal = 0, listaAtualIndex = 0;
 
-// 🔹 127 símbolos únicos
 const simbolosDisponiveis = [
 '☀️','☁️','☔','⚡','❄️','🔥','💧','🌊','🌪️','⛰️','⛺','🏠','🚗','🚲','✈️','⛵',
 '🚀','🛸','🪐','🌙','⭐','🌈','🌻','🌳','🌴','🍀','🍎','🍉','🍌','🍇','🥥','🌽',
@@ -157,21 +169,17 @@ for(let i=1;i<=simbolosDisponiveis.length;i++){tabelaSimbolos[i]=simbolosDisponi
 const frasesEngracadas = [
   "🧐 Você tem certeza? O 'Sim' não morde!",
   "😅 Ahhh… você quase acertou! Tenta de novo, vai.",
-  "🤔 Hmm… esse botão de 'Não' parece suspeito.",
   "😂 Errar é humano, clicar em 'Não' é arte!",
   "🙃 Parabéns! Você ganhou… nada! Quer tentar de novo?",
   "🐢 O botão certo fugiu! Corre atrás dele e tenta de novo.",
   "😜 Clicou em 'Não'? O jogo ficou triste agora.",
-  "🤪 Ei, o 'Não' é só enfeite! Aperta o outro!",
-  "🧠 Parece que o cérebro tirou férias, hein?",
-  "🦥 Esse clique foi lento… mas dá pra tentar de novo!"
+  "🧠 Parece que o cérebro tirou férias, hein?"
 ];
 
 const gerarListaSimbolos = v => Object.entries(tabelaSimbolos)
   .filter(([i]) => (i & v) == v)
   .map(([,s]) => s).join(' ');
 
-// 🔹 7 grupos (1–64)
 const listas = [1,2,4,8,16,32,64].map(v=>({valor:v,simbolos:gerarListaSimbolos(v)}));
 
 const simbolosTodosDiv=document.getElementById('simbolos-todos');
@@ -181,7 +189,8 @@ const telaApresentacao=document.getElementById('tela-apresentacao'),
 telaPerguntas=document.getElementById('tela-perguntas'),
 listasContainer=document.getElementById('listas-container'),
 resultadoDiv=document.getElementById('resultado'),
-btnReiniciar=document.getElementById('btn-reiniciar');
+btnReiniciar=document.getElementById('btn-reiniciar'),
+contador=document.getElementById('contador');
 
 listas.forEach((l,i)=>{
   const d=document.createElement('div');
@@ -199,10 +208,15 @@ listas.forEach((l,i)=>{
 
 const elementosLista=document.querySelectorAll('.pergunta-lista');
 
+function atualizarContador(){
+  contador.innerText=`Pergunta ${listaAtualIndex+1} de ${listas.length}`;
+}
+
 function mostrarProximaLista(){
   if(listaAtualIndex>0)elementosLista[listaAtualIndex-1].classList.remove('active');
   if(listaAtualIndex>=listas.length)return setTimeout(mostrarResultado,400);
   elementosLista[listaAtualIndex].classList.add('active');
+  atualizarContador();
 } 
 
 window.responder=function(v,sim){
@@ -213,6 +227,7 @@ window.responder=function(v,sim){
 }
 
 function mostrarResultado(){
+  contador.style.display='none';
   listasContainer.style.display='none';
   resultadoDiv.style.display='block';
   resultadoDiv.innerHTML='<h3>... Pensando ...</h3>';
@@ -231,6 +246,8 @@ function mostrarResultado(){
 document.getElementById('btn-pronto').onclick=()=>{
   telaApresentacao.style.display='none';
   telaPerguntas.style.display='flex';
+  contador.style.display='inline-block';
+  listaAtualIndex=0; somaFinal=0;
   mostrarProximaLista();
 };
 btnReiniciar.onclick = () => location.reload();
