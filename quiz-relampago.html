@@ -6,21 +6,19 @@
 <title>Quiz Relâmpago ULTRA ⚡</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* Cores e Estilos Aprimorados */
 :root {
-    /* Cores ajustadas para melhor contraste em fundo mais claro/sólido */
-    --bg-main: #6a5acd; /* Cor sólida de fundo (Roxo Ardósia Médio) */
-    --container-bg: rgba(255, 255, 255, 0.15); /* Fundo sutil */
-    --text-color-primary: #f8f9fa; /* Branco Off */
-    --text-color-secondary: #fffbe6; /* Amarelo Claro */
-    --highlight-color: #ffcc00; /* Amarelo Vibrante */
-    --button-normal: #ff9900; /* Laranja Mais Escuro */
+    --bg-main: #6a5acd;
+    --container-bg: rgba(255, 255, 255, 0.15);
+    --text-color-primary: #f8f9fa;
+    --text-color-secondary: #fffbe6;
+    --highlight-color: #ffcc00;
+    --button-normal: #ff9900;
     --button-hover: #ffb84d;
-    --correct-color: #38c172; /* Verde Mais Profundo */
-    --wrong-color: #e3342f; /* Vermelho Mais Profundo */
+    --correct-color: #38c172;
+    --wrong-color: #e3342f;
     --box-shadow-main: 0 10px 25px rgba(0, 0, 0, 0.4);
-    --menu-button-color: #4a4a4a; /* Cinza Escuro para o botão de Menu */
-    --menu-button-text: #f8f9fa; /* Texto Branco */
+    --menu-button-color: #4a4a4a;
+    --menu-button-text: #f8f9fa;
 }
 
 body {
@@ -154,11 +152,10 @@ button:disabled {
     box-shadow: 0 5px 10px rgba(255, 204, 0, 0.4);
 }
 
-/* Novo estilo para o botão de Menu */
 #btn-voltar-menu {
     background-color: var(--menu-button-color); 
     color: var(--menu-button-text);
-    padding: 12px; /* Ligeiramente menor */
+    padding: 12px;
     font-size: 1em;
     margin-top: 20px;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
@@ -179,6 +176,7 @@ button:disabled {
 </style>
 </head>
 <body>
+
 <div class="container">
     <h1>Quiz Relâmpago ULTRA ⚡</h1>
     <div id="tempo-barra"><div id="tempo-restante"></div></div>
@@ -187,16 +185,19 @@ button:disabled {
     <button id="btn-comecar">Começar</button>
     <button id="btn-reiniciar" style="display:none;">Jogar Novamente</button>
     <div id="status"></div>
-    
     <button id="btn-voltar-menu">Voltar ao Menu</button>
 </div>
 
-<p class="creditos">
-    © Lucas Coelho, 2025
-</p>
+<p class="creditos">© Lucas Coelho, 2025</p>
+
+<!-- Sons do Quiz -->
+<audio id="som-certo" src="https://freesound.org/data/previews/320/320654_5260872-lq.mp3"></audio>
+<audio id="som-errado" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+<audio id="som-tempo" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
+<audio id="som-clique" src="https://freesound.org/data/previews/66/66717_931655-lq.mp3"></audio>
 
 <script>
-// Perguntas - TOTAL DE 100 PERGUNTAS
+// ====================== DADOS DO QUIZ ======================
 const todasPerguntas = [
     { q: "Qual planeta é conhecido como Planeta Vermelho?", o: ["Júpiter", "Marte", "Saturno"], c: 1 },
     { q: "Qual é o maior animal do mundo?", o: ["Elefante", "Baleia Azul", "Tubarão Branco"], c: 1 },
@@ -308,7 +309,7 @@ const todasPerguntas = [
     { q: "O que o acrônimo ONU significa?", o: ["Organização das Nações Unidas", "Ordem Nacional Unida", "Organização Nacional de Universidades"], c: 0 }
 ];
 
-// Configurações do Jogo
+// ====================== CONFIGURAÇÕES ======================
 const TEMPO_INICIAL = 7; 
 const TEMPO_INCREMENTO = 3; 
 const TEMPO_DECREMENTO = 3; 
@@ -320,16 +321,21 @@ let pontuacao = 0;
 let intervalo;
 let perguntaAtual = 0;
 
-// Elementos DOM
+// ====================== ELEMENTOS ======================
 const tempoRestanteEl = document.getElementById("tempo-restante");
 const perguntaEl = document.getElementById("pergunta");
 const opcoesEl = document.getElementById("opcoes");
 const statusEl = document.getElementById("status");
 const btnComecar = document.getElementById("btn-comecar");
 const btnReiniciar = document.getElementById("btn-reiniciar");
-const btnVoltarMenu = document.getElementById("btn-voltar-menu"); // Novo elemento
+const btnVoltarMenu = document.getElementById("btn-voltar-menu");
 
-/** Função utilitária para embaralhar um array (Algoritmo de Fisher-Yates) */
+const somCerto = document.getElementById("som-certo");
+const somErrado = document.getElementById("som-errado");
+const somTempo = document.getElementById("som-tempo");
+const somClique = document.getElementById("som-clique");
+
+// ====================== FUNÇÕES ======================
 function embaralhar(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -338,19 +344,12 @@ function embaralhar(array) {
     return array;
 }
 
-/** Atualiza a barra de tempo visualmente. */
 function atualizarBarra() {
     const porcentagem = (tempo / TEMPO_INICIAL) * 100;
     tempoRestanteEl.style.width = Math.max(0, porcentagem) + "%";
-    
-    if (tempo <= 3 && tempo > 0) {
-        tempoRestanteEl.style.backgroundColor = '#FF4500'; 
-    } else {
-        tempoRestanteEl.style.backgroundColor = 'var(--highlight-color)';
-    }
+    tempoRestanteEl.style.backgroundColor = (tempo <= 3 && tempo > 0) ? '#FF4500' : 'var(--highlight-color)';
 }
 
-/** Inicia o contador de tempo. */
 function iniciarTempo() {
     clearInterval(intervalo);
     intervalo = setInterval(() => {
@@ -362,10 +361,9 @@ function iniciarTempo() {
         } else {
             atualizarBarra();
         }
-    }, 100); 
+    }, 100);
 }
 
-/** Exibe a pergunta e as opções atuais. */
 function mostrarPergunta() {
     tempo = TEMPO_INICIAL; 
     atualizarBarra();
@@ -385,7 +383,6 @@ function mostrarPergunta() {
     });
 }
 
-/** Verifica a resposta selecionada. */
 function verificarResposta(i) {
     clearInterval(intervalo); 
     const p = perguntas[perguntaAtual];
@@ -396,10 +393,12 @@ function verificarResposta(i) {
         botoes[i].classList.add("certa");
         pontuacao++;
         tempo += TEMPO_INCREMENTO;
+        somCerto.currentTime = 0; somCerto.play();
     } else {
         botoes[i].classList.add("errada");
         botoes[p.c].classList.add("certa");
         tempo -= TEMPO_DECREMENTO;
+        somErrado.currentTime = 0; somErrado.play();
     }
     
     tempo = Math.max(0, tempo); 
@@ -415,7 +414,6 @@ function verificarResposta(i) {
     }, 900); 
 }
 
-/** Prepara e inicia o jogo. */
 function iniciarJogo() {
     perguntas = embaralhar([...todasPerguntas]).slice(0, MAX_PERGUNTAS); 
     tempo = TEMPO_INICIAL;
@@ -430,7 +428,6 @@ function iniciarJogo() {
     mostrarPergunta();
 }
 
-/** Encerra o jogo e exibe o resultado final. */
 function fimDeJogo() {
     clearInterval(intervalo);
     opcoesEl.innerHTML = ""; 
@@ -438,8 +435,10 @@ function fimDeJogo() {
 
     if (tempo <= 0) {
         perguntaEl.textContent = "⏰ Tempo esgotado! Game Over.";
+        somTempo.currentTime = 0; somTempo.play();
     } else {
         perguntaEl.textContent = "🎉 Quiz Completo!";
+        somCerto.currentTime = 0; somCerto.play();
     }
     
     statusEl.textContent = `Pontuação final: ${pontuacao} ponto${pontuacao!==1?"s":""} de ${MAX_PERGUNTAS}!`;
@@ -447,20 +446,14 @@ function fimDeJogo() {
     btnReiniciar.style.display = "block"; 
 }
 
-// Inicializa a interface no carregamento
+// ====================== INICIALIZAÇÃO ======================
 perguntaEl.textContent = `Clique em "Começar" para jogar! Responda ${MAX_PERGUNTAS} perguntas em ${TEMPO_INICIAL} segundos cada.`;
 statusEl.textContent = `Acerte para ganhar +${TEMPO_INCREMENTO}s, erre para perder -${TEMPO_DECREMENTO}s.`;
 btnComecar.style.display = "block";
 
-
-// Event Listeners
-btnComecar.onclick = iniciarJogo;
-btnReiniciar.onclick = iniciarJogo;
-
-// NOVO: Redireciona para o menu minigames
-btnVoltarMenu.onclick = () => {
-    window.location.href = "menu-minigames.html";
-};
+btnComecar.onclick = () => { somClique.play(); iniciarJogo(); };
+btnReiniciar.onclick = () => { somClique.play(); iniciarJogo(); };
+btnVoltarMenu.onclick = () => { somClique.play(); window.location.href = "menu-minigames.html"; };
 
 </script>
 </body>
