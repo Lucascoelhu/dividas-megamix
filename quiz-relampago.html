@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Relâmpago ⚡</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<style>
+body {
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
+
+.container {
+    background: rgba(0,0,0,0.25);
+    border-radius: 25px;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 1.6em;
+    margin-bottom: 10px;
+    color: #FFD700;
+}
+
+#pergunta {
+    font-size: 1.15em;
+    margin-bottom: 15px;
+    min-height: 60px;
+    color: #FFFF99;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover { transform: scale(1.04); }
+
+.resposta { background-color: #FFB300; color: #000; }
+.resposta.certa { background-color: #4CAF50; color: #fff; }
+.resposta.errada { background-color: #f44336; color: #fff; }
+
+#status {
+    margin-top: 15px;
+    font-size: 1.1em;
+    color: #FFFF00;
+}
+
+#tempo-barra {
+    height: 12px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0 15px 0;
+}
+
+#tempo-restante {
+    height: 12px;
+    width: 100%;
+    background-color: #FFD700;
+    transition: width 0.2s linear;
+}
+
+#btn-reiniciar, #btn-comecar {
+    background-color: #FFB300;
+    color: #000;
+}
+
+@media (max-height: 600px) {
+    h1 { font-size: 1.3em; }
+    button { font-size: 1em; padding: 12px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Quiz Relâmpago ⚡</h1>
+    <div id="tempo-barra"><div id="tempo-restante"></div></div>
+    <p id="pergunta">Clique em "Começar" para jogar!</p>
+    <div id="opcoes"></div>
+    <button id="btn-comecar">Começar</button>
+    <button id="btn-reiniciar" style="display:none;">Jogar Novamente</button>
+    <div id="status"></div>
+</div>
+
+<script>
+// Perguntas
+const todasPerguntas = [
+    { q: "Qual planeta é conhecido como Planeta Vermelho?", o: ["Júpiter", "Marte", "Saturno"], c: 1 },
+    { q: "Qual é o maior animal do mundo?", o: ["Baleia Azul", "Elefante", "Tubarão Branco"], c: 0 },
+    { q: "Qual símbolo representa o infinito?", o: ["∞", "Ω", "≈"], c: 0 },
+    { q: "Em que país fica a Torre Eiffel?", o: ["Itália", "Espanha", "França"], c: 2 },
+    { q: "Qual destes é um emoji de fogo?", o: ["🔥", "💧", "🌳"], c: 0 },
+    { q: "Quanto é 9 + 10?", o: ["19", "21", "20"], c: 0 },
+    { q: "Quem é o 'rei do pop'?", o: ["Elvis Presley", "Michael Jackson", "Freddie Mercury"], c: 1 },
+    { q: "Qual desses é um jogo?", o: ["Netflix", "Minecraft", "YouTube"], c: 1 },
+    { q: "O que significa LOL na internet?", o: ["Lots of Love", "Laugh Out Loud", "League of Legends"], c: 1 },
+    { q: "Qual animal é símbolo da paz?", o: ["Pomba", "Leão", "Tigre"], c: 0 }
+];
+
+let perguntas = [];
+let tempo = 5;
+let pontuacao = 0;
+let intervalo;
+let perguntaAtual = 0;
+
+const tempoRestante = document.getElementById("tempo-restante");
+const perguntaEl = document.getElementById("pergunta");
+const opcoesEl = document.getElementById("opcoes");
+const statusEl = document.getElementById("status");
+const btnComecar = document.getElementById("btn-comecar");
+const btnReiniciar = document.getElementById("btn-reiniciar");
+
+function embaralhar(array) { return array.sort(() => Math.random() - 0.5); }
+
+function atualizarBarra() { tempoRestante.style.width = (tempo/5*100) + "%"; }
+
+function iniciarTempo() {
+    clearInterval(intervalo);
+    intervalo = setInterval(() => {
+        tempo -= 0.2;
+        if (tempo <= 0) {
+            tempo = 0;
+            atualizarBarra();
+            fimDeJogo();
+        } else {
+            atualizarBarra();
+        }
+    }, 200);
+}
+
+function mostrarPergunta() {
+    const p = perguntas[perguntaAtual];
+    perguntaEl.textContent = p.q;
+    opcoesEl.innerHTML = "";
+    p.o.forEach((op, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = op;
+        btn.className = "resposta";
+        btn.onclick = () => verificarResposta(i);
+        opcoesEl.appendChild(btn);
+    });
+}
+
+function verificarResposta(i) {
+    const p = perguntas[perguntaAtual];
+    const botoes = document.querySelectorAll(".resposta");
+    botoes.forEach(b => b.disabled = true);
+
+    if (i === p.c) {
+        botoes[i].classList.add("certa");
+        pontuacao++;
+        tempo += 2;
+    } else {
+        botoes[i].classList.add("errada");
+        botoes[p.c].classList.add("certa");
+        tempo -= 2;
+    }
+    atualizarBarra();
+
+    setTimeout(() => {
+        perguntaAtual++;
+        if (perguntaAtual < perguntas.length) {
+            mostrarPergunta();
+        } else {
+            fimDeJogo();
+        }
+    }, 900);
+}
+
+function iniciarJogo() {
+    perguntas = embaralhar([...todasPerguntas]).slice(0, 10);
+    tempo = 5;
+    pontuacao = 0;
+    perguntaAtual = 0;
+    btnComecar.style.display = "none";
+    btnReiniciar.style.display = "none";
+    statusEl.textContent = "";
+    mostrarPergunta();
+    atualizarBarra();
+    iniciarTempo();
+}
+
+function fimDeJogo() {
+    clearInterval(intervalo);
+    perguntaEl.textContent = "⏰ Tempo esgotado!";
+    opcoesEl.innerHTML = "";
+    statusEl.textContent = `Pontuação final: ${pontuacao} ponto${pontuacao!==1?"s":""}`;
+    btnReiniciar.style.display = "block";
+    document.querySelectorAll("button.resposta").forEach(b => b.disabled = true);
+}
+
+btnComecar.onclick = iniciarJogo;
+btnReiniciar.onclick = iniciarJogo;
+
+</script>
+    <p style="margin-top:20px; color:#FFD700; font-size:0.9em; text-align:center;">
+        <br>Desenvolvido por: Lucas Coelho, 2025
+    </p>
+</body>
+</html>
