@@ -19,10 +19,11 @@
     --correct-color: #38c172; /* Verde Mais Profundo */
     --wrong-color: #e3342f; /* Vermelho Mais Profundo */
     --box-shadow-main: 0 10px 25px rgba(0, 0, 0, 0.4);
+    --menu-button-color: #4a4a4a; /* Cinza Escuro para o botão de Menu */
+    --menu-button-text: #f8f9fa; /* Texto Branco */
 }
 
 body {
-    /* MUDANÇA PRINCIPAL: Fundo sólido */
     background-color: var(--bg-main); 
     font-family: 'Poppins', sans-serif;
     display: flex;
@@ -37,7 +38,7 @@ body {
 
 .container {
     background: var(--container-bg);
-    backdrop-filter: blur(10px); /* Efeito de vidro mais forte */
+    backdrop-filter: blur(10px); 
     border-radius: 25px;
     padding: 30px 25px;
     text-align: center;
@@ -153,6 +154,19 @@ button:disabled {
     box-shadow: 0 5px 10px rgba(255, 204, 0, 0.4);
 }
 
+/* Novo estilo para o botão de Menu */
+#btn-voltar-menu {
+    background-color: var(--menu-button-color); 
+    color: var(--menu-button-text);
+    padding: 12px; /* Ligeiramente menor */
+    font-size: 1em;
+    margin-top: 20px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+#btn-voltar-menu:hover {
+     transform: translateY(-2px) scale(1.02);
+}
+
 #btn-comecar { display: block; }
 
 .creditos {
@@ -173,6 +187,8 @@ button:disabled {
     <button id="btn-comecar">Começar</button>
     <button id="btn-reiniciar" style="display:none;">Jogar Novamente</button>
     <div id="status"></div>
+    
+    <button id="btn-voltar-menu">Voltar ao Menu</button>
 </div>
 
 <p class="creditos">
@@ -296,7 +312,7 @@ const todasPerguntas = [
 const TEMPO_INICIAL = 7; 
 const TEMPO_INCREMENTO = 3; 
 const TEMPO_DECREMENTO = 3; 
-const MAX_PERGUNTAS = 10; // Continua com 10 perguntas por jogo
+const MAX_PERGUNTAS = 10; 
 
 let perguntas = [];
 let tempo = TEMPO_INICIAL;
@@ -311,6 +327,7 @@ const opcoesEl = document.getElementById("opcoes");
 const statusEl = document.getElementById("status");
 const btnComecar = document.getElementById("btn-comecar");
 const btnReiniciar = document.getElementById("btn-reiniciar");
+const btnVoltarMenu = document.getElementById("btn-voltar-menu"); // Novo elemento
 
 /** Função utilitária para embaralhar um array (Algoritmo de Fisher-Yates) */
 function embaralhar(array) {
@@ -325,9 +342,9 @@ function embaralhar(array) {
 function atualizarBarra() {
     const porcentagem = (tempo / TEMPO_INICIAL) * 100;
     tempoRestanteEl.style.width = Math.max(0, porcentagem) + "%";
-    // Mudar a cor da barra quando o tempo estiver baixo
+    
     if (tempo <= 3 && tempo > 0) {
-        tempoRestanteEl.style.backgroundColor = '#FF4500'; // Laranja avermelhado
+        tempoRestanteEl.style.backgroundColor = '#FF4500'; 
     } else {
         tempoRestanteEl.style.backgroundColor = 'var(--highlight-color)';
     }
@@ -400,7 +417,6 @@ function verificarResposta(i) {
 
 /** Prepara e inicia o jogo. */
 function iniciarJogo() {
-    // Agora tem 100+ perguntas para escolher 10 aleatoriamente!
     perguntas = embaralhar([...todasPerguntas]).slice(0, MAX_PERGUNTAS); 
     tempo = TEMPO_INICIAL;
     pontuacao = 0;
@@ -440,6 +456,11 @@ btnComecar.style.display = "block";
 // Event Listeners
 btnComecar.onclick = iniciarJogo;
 btnReiniciar.onclick = iniciarJogo;
+
+// NOVO: Redireciona para o menu minigames
+btnVoltarMenu.onclick = () => {
+    window.location.href = "menu-minigames.html";
+};
 
 </script>
 </body>
