@@ -4,239 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mini Games - Mega Mix</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
     <style>
-        /* ======================================================= */
-        /* VARIÁVEIS DE COR: Dark Mode com Destaque Amarelo (MEGA) */
-        /* ======================================================= */
         :root {
-            --cor-principal: #FFC100; /* Amarelo Vibrante (Ação/Botão) */
+            --cor-principal: #FFC100;
             --cor-botao-hover: #FFA000; 
-            --azul-escuro: #1c2331; /* Fundo do Card */
-            --azul-muito-escuro: #10161f; /* Fundo do Body */
+            --azul-escuro: #1c2331;
+            --azul-muito-escuro: #10161f;
             --branco: #ffffff;
             --cor-texto-claro: #E5E7EB; 
             --cor-texto-secundario: rgba(255, 255, 255, 0.7); 
             --cor-texto-botao: var(--azul-escuro);
-            --cor-botao-alternativo: #253145; /* Cor para botão não primário */
+            --cor-botao-alternativo: #253145;
             --cor-botao-alternativo-hover: #33445e;
-            --cor-desabilitado: #374151; /* Cinza para botão em breve */
+            --cor-desabilitado: #374151;
         }
-
-        /* ======================================================= */
-        /* ESTILO GLOBAL E ESTRUTURA */
-        /* ======================================================= */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
         body {
             background-color: var(--azul-muito-escuro); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            overflow: hidden; 
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            padding:20px;
+            overflow:hidden; 
         }
-
         .card {
-            width: 90%;
-            max-width: 380px;
+            width:90%;
+            max-width:380px;
             background: var(--azul-escuro); 
-            border-radius: 28px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            padding: 40px 30px; 
-            position: relative;
-            animation: fadeInScale 0.8s ease-out forwards; 
+            border-radius:28px; 
+            box-shadow:0 10px 30px rgba(0,0,0,0.4);
+            padding:40px 30px; 
+            position:relative;
+            animation: fadeInScale 0.8s ease-out forwards;
         }
-
         @keyframes fadeInScale {
-            from { opacity: 0; transform: translateY(60px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity:0; transform: translateY(60px) scale(0.9); }
+            to { opacity:1; transform: translateY(0) scale(1); }
         }
-
-        .conteudo {
-            color: var(--cor-texto-claro);
-            text-align: center;
-        }
-        
-        /* ======================================================= */
-        /* LOGO E TÍTULOS */
-        /* ======================================================= */
-        .logo {
-            width: 80px; 
-            height: auto;
-            margin-bottom: 25px;
-            filter: drop-shadow(0 0 5px rgba(255, 193, 0, 0.2)); 
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif; 
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: var(--cor-principal); 
-        }
-
-        p.subtitulo {
-            font-size: 14px;
-            color: var(--cor-texto-secundario);
-            margin-bottom: 40px;
-        }
-
-        /* ======================================================= */
-        /* ESTILO DOS BOTÕES DE JOGO (Links) */
-        /* ======================================================= */
-        .game-opcoes {
-            display: flex;
-            flex-direction: column;
-            gap: 20px; /* Espaço entre os botões */
-        }
-        
+        .conteudo { color: var(--cor-texto-claro); text-align:center; }
+        .logo { width:80px; height:auto; margin-bottom:25px; filter:drop-shadow(0 0 5px rgba(255,193,0,0.2)); }
+        h1 { font-family:'Playfair Display', serif; font-size:32px; font-weight:700; margin-bottom:5px; color: var(--cor-principal); }
+        p.subtitulo { font-size:14px; color: var(--cor-texto-secundario); margin-bottom:40px; }
+        .game-opcoes { display:flex; flex-direction:column; gap:20px; }
         .game-button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 600;
+            display:block;
+            width:100%;
+            padding:15px;
+            border-radius:12px;
+            text-decoration:none;
+            font-size:17px;
+            font-weight:600;
             transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            letter-spacing: 0.5px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.2);
+            text-align:center;
+            letter-spacing:0.5px;
         }
-
-        /* Botão Adivinhação (Primário) - Amarelo */
-        .primary-button {
-            background: var(--cor-principal); 
-            color: var(--cor-texto-botao); 
-        }
-
-        .primary-button:hover {
-            background-color: var(--cor-botao-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 193, 0, 0.5);
-        }
-
-        /* NOVO: Botão Secundário (Pong) - Azul Escuro */
-        .secondary-button {
-            background: var(--cor-botao-alternativo); 
-            color: var(--cor-texto-claro); 
-            border: 1px solid var(--cor-principal); /* Borda para destaque */
-        }
-
-        .secondary-button:hover {
-            background-color: var(--cor-botao-alternativo-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-        }
-
-
-        /* Botão Em Breve (Desabilitado visualmente) */
-        .disabled-button {
-            background: var(--cor-desabilitado);
-            color: var(--cor-texto-secundario);
-            cursor: default;
-            opacity: 0.7;
-            /* Remove efeitos de hover/clique */
-            pointer-events: none; 
-        }
-        
-        /* Ícones dentro dos botões */
-        .game-button span {
-            margin-right: 8px;
-        }
-        
-        /* ======================================================= */
-        /* BOTÃO VOLTAR */
-        /* ======================================================= */
-        .back-button {
-            display: inline-block;
-            margin-top: 30px;
-            font-size: 14px;
-            color: var(--cor-texto-secundario);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        
-        .back-button:hover {
-            color: var(--cor-principal);
-        }
-
-        /* ======================================================= */
-        /* RODAPÉ <a href="minigame-adivinhacao.html" class="game-button primary-button" id="linkAdivinhacao">
-                <span>🧠</span>1. Mini Game - Adivinhação
-            </a>  */ 
-        /* ======================================================= */
-        footer {
-            text-align: center;
-            font-size: 12px;
-            color: var(--cor-texto-secundario);
-            padding-top: 40px;
-        }
-
+        .primary-button { background: var(--cor-principal); color: var(--cor-texto-botao); }
+        .primary-button:hover { background-color: var(--cor-botao-hover); transform:translateY(-2px); box-shadow:0 6px 15px rgba(255,193,0,0.5); }
+        .secondary-button { background: var(--cor-botao-alternativo); color: var(--cor-texto-claro); border:1px solid var(--cor-principal); }
+        .secondary-button:hover { background-color: var(--cor-botao-alternativo-hover); transform:translateY(-2px); box-shadow:0 6px 15px rgba(0,0,0,0.5); }
+        .disabled-button { background: var(--cor-desabilitado); color: var(--cor-texto-secundario); cursor:default; opacity:0.7; pointer-events:none; }
+        .game-button span { margin-right:8px; }
+        .back-button { display:inline-block; margin-top:30px; font-size:14px; color: var(--cor-texto-secundario); text-decoration:none; transition:color 0.2s; }
+        .back-button:hover { color: var(--cor-principal); }
+        footer { text-align:center; font-size:12px; color: var(--cor-texto-secundario); padding-top:40px; }
     </style> 
 </head>
 <body>
 
 <div class="card">
     <div class="conteudo">
-        
         <img src="GRUPO.png" alt="Grupo Mega Logo" class="logo">
-        
         <h1>Mini Games</h1> 
         <p class="subtitulo">Selecione o desafio que deseja iniciar.</p>
 
         <div class="game-opcoes">
-            
-            
             <a href="minigame-adivinhacao.html" class="game-button secondary-button">
                 <span>🧠</span>1. Mini Game - Adivinhação
             </a>
             <a href="pong.html" class="game-button secondary-button">
                 <span>🏓</span>2. Mini Game - PONG
             </a>
-
+            <a href="quiz-relampago.html" class="game-button secondary-button">
+                <span>⚡</span>3. Mini Game - Quiz Relâmpago
+            </a>
             <a href="#" class="game-button disabled-button">
                 <span>🚧</span> Mini Game (Em Breve)
             </a>
-            
         </div>
         
         <a href="index.html" class="back-button">← Voltar ao Menu</a>
-        
-        </div>
-            <footer>© Lucas Coelho, 2025</footer>
-        </div>
-
-<script>
-    // Este script garante que o botão "Adivinhação" envie a senha 
-    // correta para o jogo, se ele precisar desse dado.
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    // Pega a senha (s) passada da tela de menu (menu.html?s=1234)
-    const senha = urlParams.get('s'); 
-    
-    // ATUALIZADO: Usando o ID que você adicionou
-    const linkAdivinhacao = document.getElementById('linkAdivinhacao');
-
-    // Se a senha foi passada, anexamos ela ao link do jogo de adivinhação
-    if (senha) {
-        // Altere 'minigame-adivinhacao.html' para o nome do seu arquivo de jogo real
-        linkAdivinhacao.href = `minigame-adivinhacao.html?s=${senha}`;
-    } 
-    // Se a senha não for passada, o link já está configurado no HTML para 
-    // 'minigame-adivinhacao.html', então não precisamos de um 'else'.
-
-    // O link do PONG não precisa dessa lógica de senha, ele apenas aponta para 'pong.html' conforme configurado no HTML.
-</script>
+    </div>
+    <footer>© Lucas Coelho, 2025</footer>
+</div>
 
 </body>
 </html>
