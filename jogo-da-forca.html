@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 Forca Animada - Você Escolhe a Palavra e a Dica!</title>
+
+<style>
+/* ===================== */
+/* 🎨 ESTILO MODERNO NOVO */
+/* ===================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+:root {
+    --cor-primaria: #0077b6;
+    --cor-secundaria: #48cae4;
+    --cor-fundo: #e3f2fd;
+    --cor-card: #ffffff;
+    --cor-texto: #333;
+    --cor-sucesso: #4ecd8b;
+    --cor-erro: #ff6b6b;
+    --cor-aviso: #ffca3a;
+}
+
+/* Fundo em gradiente sutil */
+body {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg, #caf0f8, #ade8f4, #90e0ef);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Container central com efeito neomórfico */
+.container {
+    background: var(--cor-card);
+    border-radius: 20px;
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.15),
+                -8px -8px 20px rgba(255, 255, 255, 0.8);
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+    transition: all 0.3s ease;
+}
+
+/* Título principal */
+h1 {
+    color: var(--cor-primaria);
+    margin-bottom: 10px;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+/* Texto descritivo */
+p {
+    color: var(--cor-texto);
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+
+/* Campo de palavra e dica */
+#palavra-setup {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Campos de input */
+input[type="text"], input[type="password"] {
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: #f1f6fa;
+    box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.1),
+                inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+    font-size: 1em;
+    color: var(--cor-texto);
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--cor-secundaria);
+}
+
+/* Botões */
+button {
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--cor-primaria);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0, 119, 182, 0.8);
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: var(--cor-secundaria);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0, 119, 182, 0.8);
+}
+
+/* Desenho da Forca */
+#forca-desenho {
+    font-family: monospace;
+    font-size: 1.3em;
+    color: #555;
+    margin: 20px 0;
+    white-space: pre;
+    min-height: 140px;
+}
+
+/* Palavra */
+#palavra-display {
+    font-size: 2.5em;
+    letter-spacing: 12px;
+    margin: 20px 0;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    background: #f0fbff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.1),
+                inset -2px -2px 6px rgba(255,255,255,0.6);
+}
+
+/* Dica */
+#dica-display {
+    display: none;
+    margin: 15px 0;
+    background: #e0f7fa;
+    color: #006b8f;
+    padding: 10px;
+    border-left: 5px solid var(--cor-secundaria);
+    border-radius: 8px;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* Letras erradas */
+#letras-chutadas {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 600;
+    color: #444;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05),
+                inset -2px -2px 4px rgba(255,255,255,0.5);
+}
+
+/* Mensagens */
+#mensagem {
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 12px;
+    font-weight: 700;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    animation: aparecer 0.4s ease;
+}
+
+.msg-sucesso {
+    background-color: var(--cor-sucesso);
+    color: white;
+}
+
+.msg-erro {
+    background-color: var(--cor-erro);
+    color: white;
+}
+
+/* Animação de mensagem */
+@keyframes aparecer {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+/* Botão de Reiniciar */
+.container > button:last-child {
+    background: var(--cor-aviso);
+    color: #333;
+    box-shadow: 0 5px 0 rgba(255, 202, 58, 0.8);
+}
+
+.container > button:last-child:hover {
+    background: #ffe066;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+    .container {
+        padding: 25px;
+    }
+    h1 {
+        font-size: 1.6em;
+    }
+    #palavra-display {
+        font-size: 2em;
+        letter-spacing: 8px;
+    }
+    button, input {
+        font-size: 0.95em;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <h1>🎉 Jogo da Forca Animada 🎉</h1>
+    
+    <div id="palavra-setup">
+        <p><strong>FASE 1:</strong> Escolha a Palavra Secreta e a Dica!</p>
+        <input type="password" id="input-palavra" placeholder="1. Digite a palavra (sem acentos)">
+        <input type="text" id="input-dica" placeholder="2. Digite a dica (ex: Animal, País...)">
+        <button onclick="configurarJogo()">Começar Jogo</button>
+    </div>
+
+    <div id="jogo-container" style="display: none;">
+        <p>Você tem <strong>6 chances</strong> antes de ser enforcado!</p>
+
+        <div id="forca-desenho"></div>
+        <div id="dica-display"></div>
+        <div id="palavra-display"></div>
+
+        <div id="entrada-container">
+            <input type="text" id="input-letra" maxlength="1" placeholder="Digite uma letra" onkeypress="handleKeyPress(event)">
+            <button onclick="tentarLetra()">Chutar</button>
+        </div>
+
+        <div id="letras-chutadas"></div>
+        <div id="mensagem"></div>
+
+        <button onclick="reiniciarJogo()">🔄 Reiniciar</button>
+    </div>
+</div>
+
+<script>
+/* === Lógica original mantida === */
+let palavraSecreta = "";
+let dicaSecreta = "";
+let letrasCorretas = [];
+let letrasErradas = [];
+let maxErros = 6;
+let errosAtuais = 0;
+
+const bonecoForca = [
+`
+  +---+
+  |   |
+      |
+      |
+      |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+      |
+      |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+  |   |
+      |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+ /|   |
+      |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+ /|\\  |
+      |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+ /|\\  |
+ /    |
+      |
+=========
+`,`
+  +---+
+  |   |
+  O   |
+ /|\\  |
+ / \\  |
+      |
+=========
+`
+];
+
+function configurarJogo() {
+    const inputPalavra = document.getElementById('input-palavra').value.toLowerCase().trim().replace(/[^a-z]/g, '');
+    const inputDica = document.getElementById('input-dica').value.trim();
+
+    if (inputPalavra.length < 3) {
+        alert("A palavra deve ter pelo menos 3 letras e conter apenas letras.");
+        return;
+    }
+    if (inputDica.length === 0) {
+        if (!confirm("Você não inseriu uma dica. Continuar assim mesmo?")) return;
+    }
+
+    palavraSecreta = inputPalavra;
+    dicaSecreta = inputDica;
+    letrasCorretas = [];
+    letrasErradas = [];
+    errosAtuais = 0;
+
+    document.getElementById('palavra-setup').style.display = 'none';
+    document.getElementById('jogo-container').style.display = 'block';
+    document.getElementById('input-letra').focus();
+
+    const dicaElement = document.getElementById('dica-display');
+    if (dicaSecreta) {
+        dicaElement.textContent = `💡 Dica: ${dicaSecreta}`;
+        dicaElement.style.display = 'block';
+    } else {
+        dicaElement.style.display = 'none';
+    }
+    atualizarDisplay();
+    exibirMensagem("", false);
+}
+
+function atualizarDisplay() {
+    let palavraAdivinhada = "";
+    let completa = true;
+    for (const letra of palavraSecreta) {
+        if (letrasCorretas.includes(letra)) palavraAdivinhada += letra + " ";
+        else { palavraAdivinhada += "_ "; completa = false; }
+    }
+    document.getElementById('palavra-display').textContent = palavraAdivinhada.trim();
+    document.getElementById('forca-desenho').textContent = bonecoForca[errosAtuais];
+    document.getElementById('letras-chutadas').textContent = `Erros: ${letrasErradas.join(', ').toUpperCase()}`;
+    if (completa) finalizarJogo(true);
+    else if (errosAtuais >= maxErros) finalizarJogo(false);
+}
+
+function tentarLetra() {
+    const inputLetra = document.getElementById('input-letra');
+    const letra = inputLetra.value.toLowerCase().trim().replace(/[^a-z]/g, '');
+    inputLetra.value = ""; inputLetra.focus();
+
+    if (letra.length !== 1) return exibirMensagem("Digite apenas UMA letra válida (A-Z).", true, "erro");
+    if (letrasCorretas.includes(letra) || letrasErradas.includes(letra))
+        return exibirMensagem(`Você já tentou "${letra.toUpperCase()}".`, true, "erro");
+
+    if (palavraSecreta.includes(letra)) {
+        letrasCorretas.push(letra);
+        exibirMensagem(`🎉 ACERTOU! A letra "${letra.toUpperCase()}" está na palavra!`, true, "sucesso");
+    } else {
+        letrasErradas.push(letra);
+        errosAtuais++;
+        exibirMensagem(`😔 ERROU! A letra "${letra.toUpperCase()}" não está na palavra.`, true, "erro");
+    }
+    atualizarDisplay();
+}
+
+function finalizarJogo(vitoria) {
+    document.getElementById('input-letra').disabled = true;
+    document.getElementById('input-letra').nextElementSibling.disabled = true;
+    if (vitoria)
+        exibirMensagem(`🌟 PARABÉNS! Você venceu! A palavra era "${palavraSecreta.toUpperCase()}".`, true, "sucesso");
+    else
+        exibirMensagem(`☠️ FIM DE JOGO! A palavra era "${palavraSecreta.toUpperCase()}".`, true, "erro");
+}
+
+function reiniciarJogo() {
+    document.getElementById('input-letra').disabled = false;
+    document.getElementById('input-letra').nextElementSibling.disabled = false;
+    document.getElementById('input-palavra').value = "";
+    document.getElementById('input-dica').value = "";
+    document.getElementById('jogo-container').style.display = 'none';
+    document.getElementById('palavra-setup').style.display = 'block';
+    document.getElementById('dica-display').style.display = 'none';
+}
+
+function handleKeyPress(e) {
+    if (e.keyCode === 13) { e.preventDefault(); tentarLetra(); }
+}
+
+function exibirMensagem(texto, mostrar = true, tipo = "sucesso") {
+    const msg = document.getElementById('mensagem');
+    msg.textContent = texto;
+    msg.className = "";
+    if (mostrar) {
+        msg.style.display = 'block';
+        msg.classList.add(tipo === "sucesso" ? "msg-sucesso" : "msg-erro");
+    } else msg.style.display = 'none';
+}
+</script>
+</body>
+</html>
