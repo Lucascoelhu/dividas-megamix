@@ -21,6 +21,7 @@
   --cor-sucesso: #4ecd8b;
   --cor-erro: #ff6b6b;
   --cor-aviso: #ffca3a;
+  --cor-menu: #333; /* Cor para o botão de menu */
 }
 
 /* Fundo suave e fluido */
@@ -109,6 +110,56 @@ button:active {
   transform: scale(0.97);
 }
 
+/* --- ESTILOS DE AÇÃO INFERIOR --- */
+
+/* Container Flex para botões na parte inferior */
+#acoes-finais {
+  display: flex;
+  gap: 10px; /* Espaço entre os botões */
+  margin-top: 12px;
+}
+
+/* Estilo para o botão Reiniciar (Laranja/Aviso) */
+#acoes-finais button {
+  background: var(--cor-aviso);
+  color: var(--cor-texto);
+  flex: 1; /* Ocupa metade do espaço */
+  margin: 0; /* Remove margem extra */
+}
+
+#acoes-finais button:hover {
+  background: #ffe066;
+}
+
+/* Estilo para o botão de Menu Principal (Escuro/Secundário) */
+.btn-menu {
+  /* Estilo de link como botão */
+  background: var(--cor-menu); /* Cor escura para contraste */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Espaço entre o ícone e o texto */
+  text-decoration: none; /* Remove o sublinhado do link */
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  flex: 1; /* Ocupa a outra metade do espaço */
+  box-sizing: border-box; 
+}
+
+.btn-menu:hover {
+  background: #555;
+  transform: scale(1.01); 
+}
+
+.btn-menu:active {
+  transform: scale(0.99);
+}
+
+
 /* Forca */
 #forca-desenho {
   font-family: monospace;
@@ -175,17 +226,6 @@ button:active {
   color: #fff;
 }
 
-/* Reiniciar */
-.container > button:last-child {
-  background: var(--cor-aviso);
-  color: #333;
-  margin-top: 12px;
-}
-
-.container > button:last-child:hover {
-  background: #ffe066;
-}
-
 /* Entrada de letra */
 #entrada-container {
   display: flex;
@@ -209,15 +249,13 @@ button:active {
     font-size: 1.6em;
     letter-spacing: 5px;
   }
-  button {
-    font-size: 0.9em;
-  }
 }
 </style>
 </head>
 
 <body>
 <div class="container">
+  
   <h1>🔠 Jogo da Forca 🔠 </h1>
 
   <div id="palavra-setup">
@@ -241,12 +279,17 @@ button:active {
     <div id="letras-chutadas"></div>
     <div id="mensagem"></div>
 
-    <button onclick="reiniciarJogo()">🔄 Reiniciar</button>
-  </div>
+    <div id="acoes-finais">
+        <button onclick="reiniciarJogo()">🔄 Reiniciar</button>
+        <a href="menu-minigames.html" class="btn-menu">
+            🏠 Menu
+        </a>
+    </div>
+    </div>
 </div>
 
 <script>
-/* === Lógica igual à versão anterior === */
+/* === Lógica do Jogo da Forca === */
 let palavraSecreta = "";
 let dicaSecreta = "";
 let letrasCorretas = [];
@@ -371,7 +414,7 @@ function tentarLetra() {
 
 function finalizarJogo(vitoria) {
   document.getElementById('input-letra').disabled = true;
-  document.getElementById('input-letra').nextElementSibling.disabled = true;
+  document.getElementById('input-letra').nextElementSibling.disabled = true; 
   if (vitoria) exibirMensagem(`🌟 Parabéns! Você venceu!`, true, "sucesso");
   else exibirMensagem(`☠️ Fim de jogo! A palavra era "${palavraSecreta.toUpperCase()}".`, true, "erro");
 }
