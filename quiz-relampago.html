@@ -13,16 +13,12 @@
     --text-color-secondary: #fffbe6;
     --highlight-color: #ffcc00;
     --button-normal: #ff9900;
-    --button-hover: #ffb84d;
     --correct-color: #38c172;
     --wrong-color: #e3342f;
-    --box-shadow-main: 0 10px 25px rgba(0, 0, 0, 0.4);
-    --menu-button-color: #4a4a4a;
-    --menu-button-text: #f8f9fa;
 }
 
 body {
-    background-color: var(--bg-main); 
+    background-color: var(--bg-main);
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
@@ -31,430 +27,233 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-    box-sizing: border-box;
 }
 
 .container {
     background: var(--container-bg);
-    backdrop-filter: blur(10px); 
+    backdrop-filter: blur(10px);
     border-radius: 25px;
     padding: 30px 25px;
     text-align: center;
-    box-shadow: var(--box-shadow-main);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     width: 100%;
     max-width: 450px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255,255,255,0.3);
 }
 
 h1 {
     font-size: 2em;
-    margin-bottom: 15px;
     color: var(--highlight-color);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    font-weight: 700;
 }
 
 #pergunta {
     font-size: 1.25em;
     margin-bottom: 20px;
-    min-height: 70px;
     color: var(--text-color-secondary);
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-}
-
-#opcoes {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    min-height: 70px;
 }
 
 button {
     width: 100%;
-    padding: 16px;
+    padding: 14px;
+    margin: 6px 0;
     border: none;
     border-radius: 15px;
-    font-size: 1.1em;
+    font-size: 1.05em;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.3s ease-in-out;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
 }
 
-button:hover:not(:disabled) { 
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
-}
+button:hover:not(:disabled) { transform: translateY(-3px); }
+button:disabled { opacity: 0.7; cursor: not-allowed; }
 
-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
-}
+.resposta { background-color: var(--button-normal); color: #333; }
+.certa { background-color: var(--correct-color); color: white; animation: pulse 0.5s 2; }
+.errada { background-color: var(--wrong-color); color: white; animation: shake 0.4s; }
 
-.resposta { 
-    background-color: var(--button-normal); 
-    color: #333;
-}
-.resposta.certa { 
-    background-color: var(--correct-color); 
-    color: var(--text-color-primary); 
-    animation: pulseCorrect 0.5s 2;
-}
-.resposta.errada { 
-    background-color: var(--wrong-color); 
-    color: var(--text-color-primary); 
-    animation: shakeWrong 0.4s;
-}
-
-@keyframes pulseCorrect {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-@keyframes shakeWrong {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
-}
-
-#status {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: var(--highlight-color);
-    font-weight: 700;
+@keyframes pulse { 50% { transform: scale(1.05); } }
+@keyframes shake {
+  0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-5px);}40%,80%{transform:translateX(5px);}
 }
 
 #tempo-barra {
-    height: 15px;
-    width: 100%;
-    background-color: rgba(255,255,255,0.4);
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 15px 0 20px 0;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 12px; width: 100%; background-color: rgba(255,255,255,0.4);
+    border-radius: 10px; overflow: hidden; margin: 15px 0;
 }
+#tempo-restante { height: 12px; background-color: var(--highlight-color); width: 100%; transition: width 0.2s linear; }
 
-#tempo-restante {
-    height: 15px;
-    width: 100%;
-    background-color: var(--highlight-color);
-    transition: width 0.2s linear, background-color 0.2s;
-}
-
-#btn-reiniciar, #btn-comecar {
-    background-color: var(--highlight-color);
-    color: #333;
-    margin-top: 15px;
-    box-shadow: 0 5px 10px rgba(255, 204, 0, 0.4);
-}
-
-#btn-voltar-menu {
-    background-color: var(--menu-button-color); 
-    color: var(--menu-button-text);
-    padding: 12px;
-    font-size: 1em;
-    margin-top: 20px;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-}
-#btn-voltar-menu:hover {
-     transform: translateY(-2px) scale(1.02);
-}
-
-#btn-comecar { display: block; }
-
-.creditos {
-    margin-top: 30px;
-    color: var(--text-color-primary);
-    font-size: 0.85em;
-    text-align: center;
-    opacity: 0.7;
-}
+.creditos { margin-top: 20px; font-size: 0.8em; color: #ddd; opacity: 0.8; }
+.hidden { display: none; }
 </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Quiz Relâmpago ULTRA ⚡</h1>
-    <div id="tempo-barra"><div id="tempo-restante"></div></div>
-    <p id="pergunta">Clique em "Começar" para jogar! Você terá 7 segundos por pergunta.</p>
-    <div id="opcoes"></div>
-    <button id="btn-comecar">Começar</button>
-    <button id="btn-reiniciar" style="display:none;">Jogar Novamente</button>
-    <div id="status"></div>
-    <button id="btn-voltar-menu">Voltar ao Menu</button>
+
+    <!-- MENU DE TEMA -->
+    <div id="menu-tema">
+        <p style="color:white;">Escolha um tema:</p>
+        <button class="tema-btn" data-tema="geral">🌍 Conhecimentos Gerais</button>
+        <button class="tema-btn" data-tema="ciencia">🔬 Ciência</button>
+        <button class="tema-btn" data-tema="geografia">🗺️ Geografia</button>
+        <button class="tema-btn" data-tema="entretenimento">🎮 Entretenimento</button>
+    </div>
+
+    <!-- CONTEÚDO DO JOGO -->
+    <div id="jogo" class="hidden">
+        <div id="tempo-barra"><div id="tempo-restante"></div></div>
+        <p id="pergunta">Clique em "Começar"!</p>
+        <div id="opcoes"></div>
+        <button id="btn-comecar">Começar</button>
+        <button id="btn-reiniciar" class="hidden">Jogar Novamente</button>
+        <p id="status"></p>
+        <button id="btn-voltar" class="hidden">Voltar ao Menu</button>
+    </div>
 </div>
 
 <p class="creditos">© Lucas Coelho, 2025</p>
 
-<!-- Sons do Quiz -->
+<!-- Sons -->
 <audio id="som-certo" src="https://freesound.org/data/previews/320/320654_5260872-lq.mp3"></audio>
 <audio id="som-errado" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
 <audio id="som-tempo" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3"></audio>
-<audio id="som-clique" src="https://freesound.org/data/previews/66/66717_931655-lq.mp3"></audio>
 
 <script>
-// ====================== DADOS DO QUIZ ======================
-const todasPerguntas = [
-    { q: "Qual planeta é conhecido como Planeta Vermelho?", o: ["Júpiter", "Marte", "Saturno"], c: 1 },
-    { q: "Qual é o maior animal do mundo?", o: ["Elefante", "Baleia Azul", "Tubarão Branco"], c: 1 },
-    { q: "Qual símbolo representa o infinito?", o: ["Ω", "≈", "∞"], c: 2 },
-    { q: "Em que país fica a Torre Eiffel?", o: ["Itália", "Espanha", "França"], c: 2 },
-    { q: "Qual destes é um emoji de fogo?", o: ["💧", "🌳", "🔥"], c: 2 },
-    { q: "Quanto é 9 + 10?", o: ["19", "21", "20"], c: 0 },
-    { q: "Quem é o 'rei do pop'?", o: ["Elvis Presley", "Michael Jackson", "Freddie Mercury"], c: 1 },
-    { q: "Qual desses é um jogo?", o: ["Netflix", "YouTube", "Minecraft"], c: 2 },
-    { q: "O que significa LOL na internet?", o: ["Lots of Love", "League of Legends", "Laugh Out Loud"], c: 2 },
-    { q: "Qual animal é símbolo da paz?", o: ["Leão", "Tigre", "Pomba"], c: 2 },
-    { q: "Qual é a capital do Japão?", o: ["Seul", "Pequim", "Tóquio"], c: 2 },
-    { q: "O que a sigla HTML significa?", o: ["High-Tech Modern Links", "Home Tool Management", "HyperText Markup Language"], c: 2 },
-    { q: "Qual o metal mais abundante na crosta terrestre?", o: ["Ferro", "Alumínio", "Ouro"], c: 1 },
-    { q: "Quantos ossos tem um tubarão?", o: ["200", "0", "50"], c: 1 },
-    { q: "Qual o nome do Oceano entre a Europa e as Américas?", o: ["Pacífico", "Índico", "Atlântico"], c: 2 },
-    { q: "Quem pintou a 'Mona Lisa'?", o: ["Van Gogh", "Michelangelo", "Leonardo da Vinci"], c: 2 },
-    { q: "Qual é a substância mais dura do planeta?", o: ["Grafite", "Diamante", "Quartzo"], c: 1 },
-    { q: "Qual o maior deserto do mundo?", o: ["Saara", "Gobi", "Antártida"], c: 2 },
-    { q: "Em que ano o homem pisou na Lua pela primeira vez?", o: ["1969", "1971", "1965"], c: 0 },
-    { q: "Qual o plural de 'Pão'?", o: ["Pães", "Pãos", "Pãozinhos"], c: 0 },
-    { q: "Qual é a capital do Canadá?", o: ["Toronto", "Vancouver", "Ottawa"], c: 2 },
-    { q: "Quantos lados tem um heptágono?", o: ["6", "7", "8"], c: 1 },
-    { q: "O Sol é uma estrela ou um planeta?", o: ["Planeta", "Cometa", "Estrela"], c: 2 },
-    { q: "Qual o nome da moeda oficial do Reino Unido?", o: ["Euro", "Dólar", "Libra Esterlina"], c: 2 },
-    { q: "Quem escreveu 'Dom Quixote'?", o: ["Gabriel García Márquez", "Miguel de Cervantes", "Machado de Assis"], c: 1 },
-    { q: "Qual o país com mais ilhas no mundo?", o: ["Grécia", "Suécia", "Filipinas"], c: 1 },
-    { q: "Qual o componente principal do vidro?", o: ["Calcário", "Sílica", "Feldspato"], c: 1 },
-    { q: "Qual a menor letra do alfabeto grego?", o: ["Delta", "Alfa", "Iota"], c: 2 },
-    { q: "O que o acrônimo WWW significa?", o: ["World Web Wonders", "Wide World Web", "World Wide Web"], c: 2 },
-    { q: "Qual o animal mais rápido do mundo?", o: ["Guepardo", "Falcão-peregrino", "Leão"], c: 1 },
-    { q: "Qual o maior órgão do corpo humano?", o: ["Coração", "Fígado", "Pele"], c: 2 },
-    { q: "Qual o instrumento musical mais antigo?", o: ["Flauta", "Harpa", "Tambor"], c: 0 },
-    { q: "Qual o nome do criador do Facebook?", o: ["Bill Gates", "Elon Musk", "Mark Zuckerberg"], c: 2 },
-    { q: "Em que continente fica o Egito?", o: ["Ásia", "África", "Europa"], c: 1 },
-    { q: "O que é um 'byte' na informática?", o: ["Um Bit", "Um Megabyte", "Oito Bits"], c: 2 },
-    { q: "Qual a árvore que produz a azeitona?", o: ["Carvalho", "Oliveira", "Pinheiro"], c: 1 },
-    { q: "Qual o esporte mais popular no Brasil?", o: ["Vôlei", "Futebol", "Basquete"], c: 1 },
-    { q: "Qual o país mais populoso do mundo (Atualmente)?", o: ["China", "EUA", "Índia"], c: 2 },
-    { q: "Qual a capital da Argentina?", o: ["Santiago", "Montevidéu", "Buenos Aires"], c: 2 },
-    { q: "O que é a fotossíntese?", o: ["Processo de respiração", "Produção de luz", "Produção de alimento"], c: 2 },
-    { q: "Qual o nome do buraco negro no centro da Via Láctea?", o: ["Cygnus X-1", "Sagittarius A*", "V404 Cygni"], c: 1 },
-    { q: "Qual o nome da galáxia mais próxima da Via Láctea?", o: ["Triângulo", "Andrômeda", "Magalhães"], c: 1 },
-    { q: "Qual a fórmula química da água?", o: ["CO2", "H2O", "O2"], c: 1 },
-    { q: "Qual o gás essencial para a nossa respiração?", o: ["Nitrogênio", "Oxigênio", "Hélio"], c: 1 },
-    { q: "Quem foi a primeira mulher a ganhar um Prêmio Nobel?", o: ["Ada Lovelace", "Marie Curie", "Rosalind Franklin"], c: 1 },
-    { q: "Qual o metal líquido em temperatura ambiente?", o: ["Chumbo", "Mercúrio", "Gálio"], c: 1 },
-    { q: "Qual o número atômico do Carbono?", o: ["6", "8", "12"], c: 0 },
-    { q: "Qual o ponto de fusão do gelo em Celsius?", o: ["10°C", "0°C", "-10°C"], c: 1 },
-    { q: "Qual o nome da ciência que estuda os fungos?", o: ["Botânica", "Micologia", "Zoologia"], c: 1 },
-    { q: "Qual o animal que tem 3 corações?", o: ["Aranha", "Polvo", "Baleia"], c: 1 },
-    { q: "Qual a cor primária que falta no arco-íris?", o: ["Ciano", "Magenta", "Rosa"], c: 1 },
-    { q: "Em que ano começou a Primeira Guerra Mundial?", o: ["1918", "1914", "1939"], c: 1 },
-    { q: "Qual o nome da deusa grega da sabedoria?", o: ["Afrodite", "Hera", "Atena"], c: 2 },
-    { q: "Qual a montanha mais alta do mundo?", o: ["K2", "Monte Fuji", "Monte Everest"], c: 2 },
-    { q: "Qual a cidade conhecida como 'A Cidade Eterna'?", o: ["Paris", "Roma", "Veneza"], c: 1 },
-    { q: "Qual o maior rio do mundo em volume de água?", o: ["Nilo", "Yangtze", "Amazonas"], c: 2 },
-    { q: "Quantos quilômetros tem uma maratona?", o: ["21 km", "42.195 km", "100 km"], c: 1 },
-    { q: "O que significa 'PH' (potencial hidrogeniônico)?", o: ["Poder de Hélio", "Potencial de Hidrogênio", "Pressão Hídrica"], c: 1 },
-    { q: "Qual a capital da Austrália?", o: ["Sydney", "Melbourne", "Canberra"], c: 2 },
-    { q: "Quem escreveu 'O Pequeno Príncipe'?", o: ["Victor Hugo", "Antoine de Saint-Exupéry", "Albert Camus"], c: 1 },
-    { q: "Qual o nome da nave que levou o homem à Lua?", o: ["Soyuz", "Discovery", "Apollo 11"], c: 2 },
-    { q: "Qual o nome da enzima que digere o leite?", o: ["Amilase", "Lipase", "Lactase"], c: 2 },
-    { q: "Quantas cores primárias existem (aditivas)?", o: ["2", "3", "4"], c: 1 },
-    { q: "Qual o nome do processo de congelamento da água?", o: ["Evaporação", "Solidificação", "Condensação"], c: 1 },
-    { q: "Qual o nome do deus romano do mar?", o: ["Júpiter", "Marte", "Netuno"], c: 2 },
-    { q: "Em que país nasceu o tango?", o: ["Colômbia", "Espanha", "Argentina"], c: 2 },
-    { q: "Qual a principal linguagem de marcação para web?", o: ["CSS", "JavaScript", "HTML"], c: 2 },
-    { q: "Qual o animal que pode voar, mas não é ave nem inseto?", o: ["Morcego", "Pterodáctilo", "Esquilo-voador"], c: 0 },
-    { q: "Qual a velocidade da luz no vácuo (aproximada)?", o: ["300 km/s", "300.000 km/s", "300.000 m/s"], c: 1 },
-    { q: "Qual o nome da pedra mais preciosa do Brasil?", o: ["Esmeralda", "Topázio", "Diamante"], c: 2 },
-    { q: "Qual o nome da teoria da origem das espécies?", o: ["Relatividade", "Evolução", "Big Bang"], c: 1 },
-    { q: "Qual a cidade mais antiga do mundo ainda habitada?", o: ["Atenas", "Damasco", "Jericó"], c: 1 },
-    { q: "Qual o satélite natural da Terra?", o: ["Vênus", "Lua", "Marte"], c: 1 },
-    { q: "Qual a capital da Alemanha?", o: ["Munique", "Berlim", "Frankfurt"], c: 1 },
-    { q: "Qual o símbolo químico para o Cobre?", o: ["Co", "Cu", "Cr"], c: 1 },
-    { q: "Qual o nome do criador da Microsoft?", o: ["Jeff Bezos", "Steve Jobs", "Bill Gates"], c: 2 },
-    { q: "Qual o maior osso do corpo humano?", o: ["Úmero", "Fêmur", "Tíbia"], c: 1 },
-    { q: "O que a sigla 'URL' significa?", o: ["Uniform Resource Link", "Universal Remote Locator", "Uniform Resource Locator"], c: 2 },
-    { q: "Qual o único metal alcalino que não flutua na água?", o: ["Sódio", "Lítio", "Césio"], c: 2 },
-    { q: "Qual o nome do famoso quadro de Edvard Munch?", o: ["Noite Estrelada", "A Persistência da Memória", "O Grito"], c: 2 },
-    { q: "Qual o país conhecido como 'Terra do Sol Nascente'?", o: ["China", "Japão", "Coreia do Sul"], c: 1 },
-    { q: "Qual o menor país do mundo em área territorial?", o: ["Mônaco", "Vaticano", "Nauru"], c: 1 },
-    { q: "Qual o nome do cientista da teoria da Relatividade?", o: ["Newton", "Einstein", "Galileu"], c: 1 },
-    { q: "Qual o nome do maior recife de coral do mundo?", o: ["Recife de Belize", "Grande Barreira de Coral", "Recife da Flórida"], c: 1 },
-    { q: "Qual o maior planeta do sistema solar?", o: ["Saturno", "Urano", "Júpiter"], c: 2 },
-    { q: "Qual o nome do herói grego que matou a Medusa?", o: ["Hércules", "Perseu", "Teseu"], c: 1 },
-    { q: "Quantos continentes existem na Terra?", o: ["5", "6", "7"], c: 1 },
-    { q: "Qual o nome do processo de transformação de água em vapor?", o: ["Sublimação", "Evaporação", "Liquefação"], c: 1 },
-    { q: "Qual o símbolo químico do Ouro?", o: ["Go", "Ag", "Au"], c: 2 },
-    { q: "Quem foi o primeiro presidente dos EUA?", o: ["Thomas Jefferson", "Abraham Lincoln", "George Washington"], c: 2 },
-    { q: "Qual a principal fonte de energia do Sol?", o: ["Fissão Nuclear", "Combustão", "Fusão Nuclear"], c: 2 },
-    { q: "Onde se localiza o famoso Taj Mahal?", o: ["Nepal", "Índia", "Paquistão"], c: 1 },
-    { q: "Qual a capital da Espanha?", o: ["Barcelona", "Sevilha", "Madri"], c: 2 },
-    { q: "Qual a cor resultante da mistura de Azul e Amarelo?", o: ["Roxo", "Verde", "Laranja"], c: 1 },
-    { q: "O que é um 'megabyte' (MB)?", o: ["Mil Bytes", "Um Milhão de Bytes", "Milhões de Bits"], c: 1 },
-    { q: "Quem é o autor da peça 'Romeu e Julieta'?", o: ["Jane Austen", "Charles Dickens", "William Shakespeare"], c: 2 },
-    { q: "Qual o nome do rio que passa por Londres?", o: ["Sena", "Tâmisa", "Danúbio"], c: 1 },
-    { q: "Qual o nome do gás mais leve?", o: ["Oxigênio", "Hélio", "Hidrogênio"], c: 2 },
-    { q: "Qual o nome da célula nervosa?", o: ["Gânglio", "Axônio", "Neurônio"], c: 2 },
-    { q: "Qual o maior felino do mundo?", o: ["Leão", "Tigre", "Puma"], c: 1 },
-    { q: "Qual a capital da Itália?", o: ["Milão", "Florença", "Roma"], c: 2 },
-    { q: "Qual o nome do animal que se transforma em borboleta?", o: ["Girino", "Ninfa", "Lagarta"], c: 2 },
-    { q: "Qual o nome da estrela mais próxima da Terra (além do Sol)?", o: ["Sirius", "Alpha Centauri", "Proxima Centauri"], c: 2 },
-    { q: "Em que século viveu Jesus Cristo?", o: ["Século II a.C.", "Século I d.C.", "Século I a.C."], c: 1 },
-    { q: "Quantos anos tem um 'lustro'?", o: ["5 anos", "10 anos", "1 ano"], c: 0 },
-    { q: "Onde fica a estátua do Cristo Redentor?", o: ["São Paulo", "Rio de Janeiro", "Brasília"], c: 1 },
-    { q: "Qual a cor do camaleão mais comum?", o: ["Verde", "Azul", "Vermelho"], c: 0 },
-    { q: "O que o acrônimo ONU significa?", o: ["Organização das Nações Unidas", "Ordem Nacional Unida", "Organização Nacional de Universidades"], c: 0 }
-];
+// ==================== TEMAS E PERGUNTAS ====================
+const temas = {
+  geral: [
+    { q: "Qual planeta é conhecido como Planeta Vermelho?", o: ["Júpiter","Marte","Saturno"], c: 1 },
+    { q: "Qual é o maior animal do mundo?", o: ["Elefante","Baleia Azul","Tubarão Branco"], c: 1 },
+    { q: "Em que país fica a Torre Eiffel?", o: ["Itália","França","Alemanha"], c: 1 },
+  ],
 
-// ====================== CONFIGURAÇÕES ======================
-const TEMPO_INICIAL = 7; 
-const TEMPO_INCREMENTO = 3; 
-const TEMPO_DECREMENTO = 3; 
-const MAX_PERGUNTAS = 10; 
+  ciencia: [
+    { q: "Qual é a fórmula da água?", o: ["H2O","CO2","O2"], c: 0 },
+    { q: "O Sol é uma estrela ou um planeta?", o: ["Estrela","Planeta","Cometa"], c: 0 },
+    { q: "Qual o gás essencial para a respiração humana?", o: ["Nitrogênio","Oxigênio","Hélio"], c: 1 },
+  ],
 
+  geografia: [
+    { q: "Qual é a capital do Japão?", o: ["Tóquio","Pequim","Seul"], c: 0 },
+    { q: "Qual o maior rio do mundo?", o: ["Amazonas","Nilo","Yangtzé"], c: 0 },
+    { q: "Onde fica o deserto do Saara?", o: ["África","Ásia","América do Sul"], c: 0 },
+  ],
+
+  entretenimento: [
+    { q: "Quem é o criador do Facebook?", o: ["Elon Musk","Mark Zuckerberg","Bill Gates"], c: 1 },
+    { q: "Qual desses é um jogo?", o: ["Netflix","Minecraft","Instagram"], c: 1 },
+    { q: "Quem é o 'rei do pop'?", o: ["Michael Jackson","Elvis Presley","Freddie Mercury"], c: 0 },
+  ]
+};
+
+// ==================== CONFIGURAÇÕES ====================
+const TEMPO_INICIAL = 7;
 let perguntas = [];
 let tempo = TEMPO_INICIAL;
 let pontuacao = 0;
 let intervalo;
-let perguntaAtual = 0;
+let atual = 0;
 
-// ====================== ELEMENTOS ======================
-const tempoRestanteEl = document.getElementById("tempo-restante");
+// ==================== ELEMENTOS ====================
+const menuTema = document.getElementById("menu-tema");
+const jogo = document.getElementById("jogo");
 const perguntaEl = document.getElementById("pergunta");
 const opcoesEl = document.getElementById("opcoes");
+const tempoRestante = document.getElementById("tempo-restante");
 const statusEl = document.getElementById("status");
 const btnComecar = document.getElementById("btn-comecar");
 const btnReiniciar = document.getElementById("btn-reiniciar");
-const btnVoltarMenu = document.getElementById("btn-voltar-menu");
-
+const btnVoltar = document.getElementById("btn-voltar");
 const somCerto = document.getElementById("som-certo");
 const somErrado = document.getElementById("som-errado");
 const somTempo = document.getElementById("som-tempo");
-const somClique = document.getElementById("som-clique");
 
-// ====================== FUNÇÕES ======================
-function embaralhar(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+// ==================== FUNÇÕES ====================
+function embaralhar(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function atualizarBarra(){
+  const porcentagem = (tempo / TEMPO_INICIAL) * 100;
+  tempoRestante.style.width = Math.max(0, porcentagem)+"%";
+  tempoRestante.style.backgroundColor = tempo <= 3 ? "#ff4500" : "var(--highlight-color)";
 }
 
-function atualizarBarra() {
-    const porcentagem = (tempo / TEMPO_INICIAL) * 100;
-    tempoRestanteEl.style.width = Math.max(0, porcentagem) + "%";
-    tempoRestanteEl.style.backgroundColor = (tempo <= 3 && tempo > 0) ? '#FF4500' : 'var(--highlight-color)';
-}
-
-function iniciarTempo() {
-    clearInterval(intervalo);
-    intervalo = setInterval(() => {
-        tempo -= 0.1; 
-        if (tempo <= 0) {
-            tempo = 0;
-            atualizarBarra();
-            setTimeout(fimDeJogo, 100); 
-        } else {
-            atualizarBarra();
-        }
-    }, 100);
-}
-
-function mostrarPergunta() {
-    tempo = TEMPO_INICIAL; 
+function iniciarTempo(){
+  clearInterval(intervalo);
+  intervalo = setInterval(()=>{
+    tempo -= 0.1;
     atualizarBarra();
-    iniciarTempo(); 
-
-    const p = perguntas[perguntaAtual];
-    perguntaEl.textContent = p.q;
-    opcoesEl.innerHTML = ""; 
-    statusEl.textContent = `Pergunta ${perguntaAtual + 1} de ${MAX_PERGUNTAS} | Pontos: ${pontuacao}`;
-
-    p.o.forEach((op, i) => {
-        const btn = document.createElement("button");
-        btn.textContent = op;
-        btn.className = "resposta";
-        btn.onclick = () => verificarResposta(i);
-        opcoesEl.appendChild(btn);
-    });
+    if(tempo <= 0){clearInterval(intervalo); fimJogo();}
+  },100);
 }
 
-function verificarResposta(i) {
-    clearInterval(intervalo); 
-    const p = perguntas[perguntaAtual];
-    const botoes = document.querySelectorAll(".resposta");
-    botoes.forEach(b => b.disabled = true); 
+function mostrarPergunta(){
+  tempo = TEMPO_INICIAL;
+  atualizarBarra();
+  iniciarTempo();
+  const p = perguntas[atual];
+  perguntaEl.textContent = p.q;
+  opcoesEl.innerHTML = "";
+  statusEl.textContent = `Pergunta ${atual+1}/${perguntas.length} | Pontos: ${pontuacao}`;
 
-    if (i === p.c) {
-        botoes[i].classList.add("certa");
-        pontuacao++;
-        tempo += TEMPO_INCREMENTO;
-        somCerto.currentTime = 0; somCerto.play();
-    } else {
-        botoes[i].classList.add("errada");
-        botoes[p.c].classList.add("certa");
-        tempo -= TEMPO_DECREMENTO;
-        somErrado.currentTime = 0; somErrado.play();
-    }
-    
-    tempo = Math.max(0, tempo); 
-    atualizarBarra();
-
-    setTimeout(() => {
-        perguntaAtual++;
-        if (perguntaAtual < perguntas.length && tempo > 0) {
-            mostrarPergunta();
-        } else {
-            fimDeJogo();
-        }
-    }, 900); 
+  p.o.forEach((op,i)=>{
+    const b=document.createElement("button");
+    b.textContent=op;
+    b.className="resposta";
+    b.onclick=()=>verificar(i);
+    opcoesEl.appendChild(b);
+  });
 }
 
-function iniciarJogo() {
-    perguntas = embaralhar([...todasPerguntas]).slice(0, MAX_PERGUNTAS); 
-    tempo = TEMPO_INICIAL;
-    pontuacao = 0;
-    perguntaAtual = 0;
-
-    btnComecar.style.display = "none";
-    btnReiniciar.style.display = "none";
-    statusEl.textContent = "";
-    perguntaEl.textContent = ""; 
-
-    mostrarPergunta();
+function verificar(i){
+  clearInterval(intervalo);
+  const p=perguntas[atual];
+  const botoes=document.querySelectorAll(".resposta");
+  botoes.forEach(b=>b.disabled=true);
+  if(i===p.c){botoes[i].classList.add("certa"); pontuacao++; somCerto.play();}
+  else {botoes[i].classList.add("errada"); botoes[p.c].classList.add("certa"); somErrado.play();}
+  setTimeout(()=>{
+    atual++;
+    if(atual<perguntas.length) mostrarPergunta(); else fimJogo();
+  },900);
 }
 
-function fimDeJogo() {
-    clearInterval(intervalo);
-    opcoesEl.innerHTML = ""; 
-    document.querySelectorAll("button.resposta").forEach(b => b.disabled = true);
-
-    if (tempo <= 0) {
-        perguntaEl.textContent = "⏰ Tempo esgotado! Game Over.";
-        somTempo.currentTime = 0; somTempo.play();
-    } else {
-        perguntaEl.textContent = "🎉 Quiz Completo!";
-        somCerto.currentTime = 0; somCerto.play();
-    }
-    
-    statusEl.textContent = `Pontuação final: ${pontuacao} ponto${pontuacao!==1?"s":""} de ${MAX_PERGUNTAS}!`;
-    
-    btnReiniciar.style.display = "block"; 
+function iniciarJogo(){
+  btnComecar.classList.add("hidden");
+  btnReiniciar.classList.add("hidden");
+  btnVoltar.classList.add("hidden");
+  pontuacao=0; atual=0;
+  mostrarPergunta();
 }
 
-// ====================== INICIALIZAÇÃO ======================
-perguntaEl.textContent = `Clique em "Começar" para jogar! Responda ${MAX_PERGUNTAS} perguntas em ${TEMPO_INICIAL} segundos cada.`;
-statusEl.textContent = `Acerte para ganhar +${TEMPO_INCREMENTO}s, erre para perder -${TEMPO_DECREMENTO}s.`;
-btnComecar.style.display = "block";
+function fimJogo(){
+  clearInterval(intervalo);
+  opcoesEl.innerHTML="";
+  perguntaEl.textContent="🎉 Fim do Quiz!";
+  statusEl.textContent=`Pontuação final: ${pontuacao}/${perguntas.length}`;
+  somTempo.play();
+  btnReiniciar.classList.remove("hidden");
+  btnVoltar.classList.remove("hidden");
+}
 
-btnComecar.onclick = () => { somClique.play(); iniciarJogo(); };
-btnReiniciar.onclick = () => { somClique.play(); iniciarJogo(); };
-btnVoltarMenu.onclick = () => { somClique.play(); window.location.href = "menu-minigames.html"; };
+// ==================== EVENTOS ====================
+document.querySelectorAll(".tema-btn").forEach(btn=>{
+  btn.onclick=()=>{
+    const temaEscolhido=btn.dataset.tema;
+    perguntas=embaralhar([...temas[temaEscolhido]]);
+    menuTema.classList.add("hidden");
+    jogo.classList.remove("hidden");
+  };
+});
 
+btnComecar.onclick=()=>iniciarJogo();
+btnReiniciar.onclick=()=>iniciarJogo();
+btnVoltar.onclick=()=>{
+  jogo.classList.add("hidden");
+  menuTema.classList.remove("hidden");
+};
 </script>
 </body>
 </html>
